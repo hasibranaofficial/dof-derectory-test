@@ -1,9 +1,11 @@
 import { notFound } from "next/navigation";
 import OfficeView from "@/components/OfficeView";
-import { getOfficeBySlug } from "@/lib/data";
+import { getAllOffices, getOfficeBySlug } from "@/lib/data";
 
-export const dynamic = "force-dynamic";
-
+export const dynamicParams = false;
+export function generateStaticParams() {
+  return getAllOffices().map(office => ({ slug: office.slug }));
+}
 export default async function OfficePage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
   const data = await getOfficeBySlug(decodeURIComponent(slug));
