@@ -1,4 +1,5 @@
 import Link from "next/link";
+export { Avatar } from "@/components/Avatar";
 import { Avatar } from "@/components/Avatar";
 import type { Office, Officer } from "@/lib/data";
 import { CATEGORIES } from "@/lib/data";
