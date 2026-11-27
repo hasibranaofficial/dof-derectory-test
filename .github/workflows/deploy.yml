@@ -39,9 +39,9 @@ jobs:
         if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch' || (github.event_name == 'push' && contains(github.event.head_commit.message, '[refresh-photos]'))
         run: python scripts/daily_refresh.py
       - name: Commit data refresh report
-        if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
+        if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch' || (github.event_name == 'push' && contains(github.event.head_commit.message, '[refresh-photos]'))
         run: |
-          if ! git diff --quiet -- data/seed.json data/last-refresh.json; then
+          if ! git diff --quiet -- data/seed.json data/last-refresh.json public/photos; then
             git config user.name "github-actions[bot]"
             git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
             git add data/seed.json data/last-refresh.json
