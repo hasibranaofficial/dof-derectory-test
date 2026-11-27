@@ -1,7 +1,7 @@
 import Link from "next/link";
 import type { Office, Officer } from "@/lib/data";
 import { categoryBySlug, getDistrictOffice, getUpazilasOfDistrict } from "@/lib/data";
-import { groupBy, OfficerCard, OfficeUrl, Tabs } from "@/components/ui";
+import { groupBy, OfficerCard, OfficeUrl } from "@/components/ui";
 
 export default async function OfficeView({ office, people }: { office: Office; people: Officer[] }) {
   const cat = categoryBySlug(office.category);
@@ -13,7 +13,6 @@ export default async function OfficeView({ office, people }: { office: Office; p
 
   return (
     <>
-      <Tabs active={office.category} />
       <main className="mx-auto max-w-7xl px-4 py-6">
         <nav className="mb-3 text-sm text-slate-500">
           <Link href="/" className="hover:text-emerald-700">হোম</Link>
