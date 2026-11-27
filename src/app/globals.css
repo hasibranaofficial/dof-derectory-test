@@ -77,3 +77,19 @@ a:focus-visible, button:focus-visible, input:focus-visible { outline: 2px solid 
 @media (max-width: 420px) {
   .site-wrap, main.mx-auto.max-w-7xl { padding-left: 16px; padding-right: 16px; }
 }
+
+.category-tabs { margin: 0; border: 0; background: transparent; }
+.category-tabs > div { max-width: 720px; margin: 0 auto; padding: 0 18px; gap: 6px; }
+.category-tabs a { display: inline-block; flex: none; white-space: nowrap; padding: 7px 12px; border: 1px solid var(--line); border-radius: 999px; background: var(--card); color: var(--mute); font-size: 12px; text-decoration: none; }
+.category-tabs a.active { color: var(--acc); border-color: var(--acc); background: var(--accbg); }
+.officer-card { display: flex; align-items: center; gap: 14px; padding: 14px 0; border: 0; border-bottom: 1px solid var(--line); border-radius: 0; background: transparent; box-shadow: none; }
+.officer-card h4 { margin: 0; color: var(--ink); font-size: 17px; font-weight: 500; line-height: 1.35; }
+.officer-card .officer-designation { margin: 2px 0 3px; color: var(--acc); font-size: 14px; line-height: 1.4; }
+.officer-card img { width: 56px; height: 56px; flex: none; border-radius: 50%; object-fit: cover; }
+.office-url { color: var(--acc); font-size: 13px; text-decoration: none; overflow-wrap: anywhere; }
+.office-card { border: 1px solid var(--line); border-radius: 18px; background: var(--card); box-shadow: none; }
+.office-card h3 { color: var(--ink); font-weight: 500; }
+main .grid.gap-3 { display: block; }
+main .grid.gap-3 > * { margin-bottom: 0; }
+main section > .grid.gap-3 > a { display: block; border: 0; border-bottom: 1px solid var(--line); border-radius: 0; background: transparent; padding: 13px 0; box-shadow: none; }
+@media (max-width: 420px) { .category-tabs > div { padding-left: 16px; padding-right: 16px; } }
