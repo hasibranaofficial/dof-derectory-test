@@ -31,10 +31,11 @@ export function OfficeUrl({ url, className = "" }: { url?: string | null; classN
 
 export function Avatar({ src, name, size = 80 }: { src?: string | null; name: string; size?: number }) {
   if (src) {
+    const photoSrc = src.startsWith("/") ? `/dof-derectory-test${src}` : src;
     // eslint-disable-next-line @next/next/no-img-element
     return (
       <img
-        src={src}
+        src={photoSrc}
         alt={name}
         width={size}
         height={Math.round(size * 1.2)}
@@ -142,7 +143,7 @@ export function Tabs({ active }: { active?: string }) {
 
 export function SearchBox({ defaultValue = "", big = false }: { defaultValue?: string; big?: boolean }) {
   return (
-    <form action="/search" method="get" className="flex w-full max-w-2xl" role="search">
+    <form action="/dof-derectory-test/search/" method="get" className="flex w-full max-w-2xl" role="search">
       <input
         name="q"
         defaultValue={defaultValue}
