@@ -54,7 +54,7 @@ export function Tabs({ active }: { active?: string }) {
 }
 export function SearchBox({ defaultValue = "", big = false }: { defaultValue?: string; big?: boolean }) {
   return <form action="/dof-derectory-test/search/" method="get" className="search-form" role="search">
-    <input name="q" defaultValue={defaultValue} placeholder="নাম, পদবি বা দপ্তর খুঁজুন — বাংলা বা English" autoComplete="off" />
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7" /><path d="m20 20-3.5-3.5" /></svg><input name="q" defaultValue={defaultValue} placeholder="নাম, পদবি বা ক্যাডার আইডি দিয়ে খুঁজুন" aria-label="খুঁজুন" autoComplete="off" />
     <button type="submit">খুঁজুন</button>
   </form>;
 }
