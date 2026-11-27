@@ -1,4 +1,8 @@
 import seed from "../../data/seed.json";
+import photoMap from "../../data/photo-map.json";
+
+const SUPABASE_PHOTO_BASE = "https://hlgtsigojqmpyqrrypye.supabase.co/storage/v1/object/public/photos/";
+const officerPhotoMap = photoMap as Record<string, Record<string, string>>;
 
 export interface Office {
   id: number; slug: string; category: string; name: string; nameEn: string | null;
@@ -28,7 +32,10 @@ const officers: Officer[] = records.flatMap((o, i) => (o.officers ?? []).map((p,
   id: officersId(i, j), officeId: i + 1, branch: p.branch ?? null, sort: j,
   name: p.name ?? "", designation: p.designation ?? "", email: p.email ?? null,
   phone: p.phone ?? null, mobile: p.mobile ?? null, room: p.room ?? null,
-  fax: p.fax ?? null, bcs: p.bcs ?? null, joined: p.joined ?? null, photo: p.photo ?? null,
+  fax: p.fax ?? null, bcs: p.bcs ?? null, joined: p.joined ?? null,
+  photo: officerPhotoMap[o.slug]?.[p.name ?? ""]
+    ? SUPABASE_PHOTO_BASE + officerPhotoMap[o.slug][p.name ?? ""]
+    : p.photo ? (p.photo.startsWith("http") ? p.photo : "/dof-derectory-test" + p.photo) : null,
 })));
 function officersId(officeIndex: number, officerIndex: number) {
   let id = 1;
