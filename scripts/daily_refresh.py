@@ -24,18 +24,18 @@ TIMEOUT = 12
 MAX_STAFF_LINKS = 2
 
 def clean(v):
-    return re.sub(r"\\s+", " ", str(v or "")).strip()
+    return re.sub(r"\s+", " ", str(v or "")).strip()
 
 def norm(v):
-    return re.sub(r"[^\\w\\u0980-\\u09ff]+", "", clean(v).lower())
+    return re.sub(r"[^\w\u0980-\u09ff]+", "", clean(v).lower())
 
 def is_probable_name(value):
     value = clean(value)
-    if len(value) < 4 or len(value) > 90 or re.search(r"@|https?://|\\d{4}", value):
+    if len(value) < 4 or len(value) > 90 or re.search(r"@|https?://|\d{4}", value):
         return False
     if re.search(r"(নাম|name|পদবি|designation|মোবাইল|ফোন|email|অফিস)", value, re.I):
         return False
-    return len(value.split()) >= 2 and bool(re.search(r"[\\u0980-\\u09ffA-Za-z]", value))
+    return len(value.split()) >= 2 and bool(re.search(r"[\u0980-\u09ffA-Za-z]", value))
 
 def is_probable_designation(value):
     value = clean(value)
@@ -70,8 +70,8 @@ def extract_people(html, page_url):
         desig_idx = next((i for i,c in enumerate(cells) if i != name_idx and is_probable_designation(c)), None)
         if desig_idx is None:
             continue
-        email_match = next((re.search(r"[\\w.+-]+@[\\w.-]+\\.[A-Za-z]{2,}", c) for c in cells if re.search(r"[\\w.+-]+@[\\w.-]+\\.[A-Za-z]{2,}", c)), None)
-        phone_match = next((c for c in cells if re.search(r"(?:\\+?\\d|[০-৯])(?:[\\d০-৯ +()-]{6,})", c)), "")
+        email_match = next((re.search(r"[\w.+-]+@[\w.-]+\.[A-Za-z]{2,}", c) for c in cells if re.search(r"[\w.+-]+@[\w.-]+\.[A-Za-z]{2,}", c)), None)
+        phone_match = next((c for c in cells if re.search(r"(?:\+?\d|[০-৯])(?:[\d০-৯ +()-]{6,})", c)), "")
         image = tr.find("img", src=True)
         photo_url = urljoin(page_url, image["src"]) if image else ""
         if photo_url and urlparse(photo_url).netloc != urlparse(page_url).netloc:
@@ -79,7 +79,7 @@ def extract_people(html, page_url):
         found.append({
             "name": cells[name_idx], "designation": cells[desig_idx],
             "email": email_match.group(0) if email_match else "",
-            "phone": re.sub(r"[^\\d০-৯+()-]", "", phone_match),
+            "phone": re.sub(r"[^\d০-৯+()-]", "", phone_match),
             "photo_url": photo_url
         })
     return found
@@ -200,8 +200,8 @@ def main():
         "policy": "No existing officers deleted; updates matched by unique name within an office; ambiguous names skipped."
     }
     if changed_fields:
-        DATA.write_text(json.dumps(data, ensure_ascii=False, separators=(",", ":")) + "\\n", encoding="utf-8")
-    REPORT.write_text(json.dumps(report, ensure_ascii=False, indent=2) + "\\n", encoding="utf-8")
+        DATA.write_text(json.dumps(data, ensure_ascii=False, separators=(",", ":")) + "\n", encoding="utf-8")
+    REPORT.write_text(json.dumps(report, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     print(json.dumps(report, ensure_ascii=False, indent=2))
 
 if __name__ == "__main__":
