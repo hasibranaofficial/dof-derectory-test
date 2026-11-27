@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 """Conservative daily refresh of the public Bangladesh Department of Fisheries directory.
+Includes BCS/cadre batch extraction where official staff tables publish that field.
 
 Only official source URLs already recorded in data/seed.json are fetched.
 Existing records are not deleted when a source is unavailable or its layout changes.
