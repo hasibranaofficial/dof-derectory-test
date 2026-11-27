@@ -36,7 +36,7 @@ jobs:
       - name: Install scraper dependencies
         run: pip install requests beautifulsoup4
       - name: Refresh official office data (scheduled/manual only)
-        if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
+        if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch' || (github.event_name == 'push' && contains(github.event.head_commit.message, '[refresh-photos]'))
         run: python scripts/daily_refresh.py
       - name: Commit data refresh report
         if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
