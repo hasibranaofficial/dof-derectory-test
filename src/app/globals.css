@@ -150,3 +150,31 @@ main section h2 { color: var(--acc) !important; font-size: 16px !important; }
   .directory-tile { min-height: 112px; padding: 12px 11px; }
   .directory-tile strong { font-size: 13px; }
 }
+
+
+/* Production directory detail-page layout */
+.directory-person { border-bottom: 1px solid var(--line); }
+.directory-person-row { display:flex; align-items:center; gap:10px; padding:14px 0; }
+.directory-person-main { width:100%; display:flex; align-items:center; gap:14px; padding:0; border:0; background:transparent; color:inherit; text-align:left; font:inherit; cursor:pointer; }
+.directory-avatar { flex:none; width:56px; height:56px; border-radius:50%; object-fit:cover; background:var(--accbg); }
+.directory-avatar-fallback { display:grid; place-items:center; color:var(--acc); font-size:20px; font-weight:700; }
+.directory-person-text { flex:1; min-width:0; }
+.directory-person-name,.directory-person-designation { display:block; }
+.directory-person-name { color:var(--ink); font-size:17px; font-weight:500; line-height:1.35; }
+.directory-person-designation { color:var(--acc); font-size:14px; font-weight:500; line-height:1.4; }
+.directory-chevron { flex:none; width:18px; height:18px; color:var(--mute); transition:transform .18s ease; }
+.directory-person.open .directory-chevron { transform:rotate(90deg); }
+.directory-person-details { margin:0 0 14px 70px; padding:12px 14px; border:1px solid var(--line); border-radius:14px; background:var(--card); }
+.directory-detail { display:grid; grid-template-columns:minmax(88px,auto) 1fr; gap:8px 14px; margin:5px 0; font-size:14px; }
+.directory-detail b { color:var(--mute); font-weight:400; }
+.directory-detail span { min-width:0; overflow-wrap:anywhere; }
+.directory-detail a { color:var(--acc); }
+.directory-person-details p { margin:0; color:var(--mute); font-size:13px; }
+main.mx-auto.max-w-7xl > h1 { margin:6px 0 2px; font-size:21px; line-height:1.35; color:var(--ink); }
+main.mx-auto.max-w-7xl > p.text-sm { margin:0; color:var(--mute); font-size:14px; }
+main.mx-auto.max-w-7xl > section { margin-top:22px; }
+main.mx-auto.max-w-7xl h2.border-l-4 { margin:18px 0 4px; }
+main.mx-auto.max-w-7xl .office-card { display:flex; align-items:center; justify-content:space-between; gap:12px; min-height:60px; padding:12px 0; border:0; border-bottom:1px solid var(--line); border-radius:0; background:transparent; }
+main.mx-auto.max-w-7xl .office-card h3 { font-size:16px; font-weight:500; line-height:1.4; }
+main.mx-auto.max-w-7xl .office-card .office-url { font-size:12px; }
+@media(max-width:420px) { .directory-person-details { margin-left:0; } .directory-detail { grid-template-columns:82px 1fr; } }
