@@ -1,0 +1,10 @@
+@import "tailwindcss";
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 4rem;
+}
+
+body {
+  font-family: "Noto Sans Bengali", "Kalpurush", "SolaimanLipi", "Nirmala UI", "Vrinda", "Segoe UI", system-ui, -apple-system, sans-serif;
+}
