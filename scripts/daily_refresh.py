@@ -72,10 +72,19 @@ def extract_people(html, page_url):
             continue
         email_match = next((re.search(r"[\w.+-]+@[\w.-]+\.[A-Za-z]{2,}", c) for c in cells if re.search(r"[\w.+-]+@[\w.-]+\.[A-Za-z]{2,}", c)), None)
         phone_match = next((c for c in cells if re.search(r"(?:\+?\d|[০-৯])(?:[\d০-৯ +()-]{6,})", c)), "")
-        image = tr.find("img", src=True)
-        photo_url = urljoin(page_url, image["src"]) if image else ""
-        if photo_url and urlparse(photo_url).netloc != urlparse(page_url).netloc:
-            photo_url = ""
+        # Government portals frequently lazy-load portraits or host them on
+        # a separate official/CDN image host. Accept common image attributes.
+        image = tr.find("img")
+        photo_src = ""
+        if image:
+            for attr in ("src", "data-src", "data-original", "data-lazy-src", "data-original-src"):
+                candidate = clean(image.get(attr))
+                if candidate and not candidate.startswith("data:"):
+                    photo_src = candidate
+                    break
+            if not photo_src and image.get("srcset"):
+                photo_src = clean(image.get("srcset")).split(",")[0].strip().split(" ")[0]
+        photo_url = urljoin(page_url, photo_src) if photo_src else ""
         found.append({
             "name": cells[name_idx], "designation": cells[desig_idx],
             "email": email_match.group(0) if email_match else "",
@@ -92,11 +101,21 @@ def save_photo(url):
         response.raise_for_status()
         mime = response.headers.get("content-type", "").split(";")[0].lower()
         extensions = {"image/jpeg": ".jpg", "image/png": ".png", "image/webp": ".webp", "image/gif": ".gif"}
-        ext = extensions.get(mime)
-        if not ext:
-            return ""
         content = response.raw.read(3 * 1024 * 1024 + 1)
         if not content or len(content) > 3 * 1024 * 1024:
+            return ""
+        # Some government servers return application/octet-stream for images.
+        ext = extensions.get(mime)
+        if not ext:
+            if content.startswith(b"\\xff\\xd8\\xff"):
+                ext = ".jpg"
+            elif content.startswith(b"\\x89PNG\\r\\n\\x1a\\n"):
+                ext = ".png"
+            elif content[:4] == b"RIFF" and content[8:12] == b"WEBP":
+                ext = ".webp"
+            elif content[:3] == b"GIF":
+                ext = ".gif"
+        if not ext:
             return ""
         PHOTO_DIR.mkdir(parents=True, exist_ok=True)
         filename = hashlib.sha256(url.encode("utf-8")).hexdigest()[:24] + ext
@@ -140,6 +159,7 @@ def main():
     data = json.loads(DATA.read_text(encoding="utf-8"))
     started = datetime.now(timezone.utc)
     changed_fields = added = updated_records = scanned = ok = 0
+    photos_saved = photo_urls_found = 0
     failures = []
     office_by_slug = {office.get("slug"): office for office in data}
     with cf.ThreadPoolExecutor(max_workers=10) as pool:
@@ -159,6 +179,10 @@ def main():
             for old in current:
                 by_name.setdefault(norm(old.get("name")), []).append(old)
             for person in fresh:
+                if person.get("photo_url"):
+                    photo_urls_found += 1
+                if person.get("photo"):
+                    photos_saved += 1
                 key = norm(person["name"])
                 candidates = by_name.get(key, [])
                 if len(candidates) == 1:
@@ -196,6 +220,8 @@ def main():
         "timezone": "UTC", "offices_in_dataset": len(data), "sources_scanned": scanned,
         "sources_with_staff_tables": ok, "new_officers": added,
         "updated_officer_records": updated_records, "changed_fields": changed_fields,
+        "photo_urls_found": photo_urls_found, "photos_saved": photos_saved,
+        "photo_files_on_disk": len(list(PHOTO_DIR.glob("*"))) if PHOTO_DIR.exists() else 0,
         "failed_sources": len(failures), "failures_sample": failures[:100],
         "policy": "No existing officers deleted; updates matched by unique name within an office; ambiguous names skipped."
     }
