@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { Avatar, groupBy, OfficeCard, OfficeUrl, Tabs } from "@/components/ui";
+import { Avatar, groupBy, OfficeCard, OfficeUrl } from "@/components/ui";
 import { CATEGORIES, categoryBySlug, getFarmManagers, getOfficesByCategory } from "@/lib/data";
 
 export const dynamicParams = false;
@@ -115,7 +115,6 @@ export default async function CategoryPage({ params }: { params: Promise<{ cat: 
 
   return (
     <>
-      <Tabs active={slug} />
       <main className="mx-auto max-w-7xl px-4 py-6">
         <h1 className="text-2xl font-bold text-emerald-950">{cat.label}</h1>
         <p className="text-sm text-slate-600">
