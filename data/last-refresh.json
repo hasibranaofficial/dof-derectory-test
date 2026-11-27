@@ -1,4 +1,515 @@
 {
-  "status": "not_run_yet",
-  "note": "The first automated refresh runs after the GitHub Actions workflow is enabled."
+  "started_at": "2026-11-27T21:14:48.466624+00:00",
+  "finished_at": "2026-11-27T21:19:08.982921+00:00",
+  "timezone": "UTC",
+  "offices_in_dataset": 703,
+  "sources_scanned": 580,
+  "sources_with_staff_tables": 115,
+  "new_officers": 187,
+  "updated_officer_records": 9,
+  "changed_fields": 202,
+  "failed_sources": 113,
+  "failures_sample": [
+    {
+      "slug": "div-dhaka",
+      "status": "HTTPError",
+      "http": 0
+    },
+    {
+      "slug": "hq",
+      "status": "SSLError",
+      "http": 0
+    },
+    {
+      "slug": "div-chattogram",
+      "status": "SSLError",
+      "http": 0
+    },
+    {
+      "slug": "div-khulna",
+      "status": "SSLError",
+      "http": 0
+    },
+    {
+      "slug": "div-mymensingh",
+      "status": "SSLError",
+      "http": 0
+    },
+    {
+      "slug": "div-barishal",
+      "status": "SSLError",
+      "http": 0
+    },
+    {
+      "slug": "div-rajshahi",
+      "status": "SSLError",
+      "http": 0
+    },
+    {
+      "slug": "fdi-chandpur",
+      "status": "SSLError",
+      "http": 0
+    },
+    {
+      "slug": "fdi-sirajganj",
+      "status": "SSLError",
+      "http": 0
+    },
+    {
+      "slug": "fdi-gopalganj",
+      "status": "SSLError",
+      "http": 0
+    },
+    {
+      "slug": "fdi-kishoreganj",
+      "status": "SSLError",
+      "http": 0
+    },
+    {
+      "slug": "fti-chandpur",
+      "status": "SSLError",
+      "http": 0
+    },
+    {
+      "slug": "ftec-faridpur",
+      "status": "SSLError",
+      "http": 0
+    },
+    {
+      "slug": "dist-0",
+      "status": "SSLError",
+      "http": 0
+    },
+    {
+      "slug": "dist-1",
+      "status": "SSLError",
+      "http": 0
+    },
+    {
+      "slug": "dist-2",
+      "status": "SSLError",
+      "http": 0
+    },
+    {
+      "slug": "dist-3",
+      "status": "SSLError",
+      "http": 0
+    },
+    {
+      "slug": "dist-4",
+      "status": "SSLError",
+      "http": 0
+    },
+    {
+      "slug": "dist-5",
+      "status": "SSLError",
+      "http": 0
+    },
+    {
+      "slug": "dist-6",
+      "status": "SSLError",
+      "http": 0
+    },
+    {
+      "slug": "dist-7",
+      "status": "SSLError",
+      "http": 0
+    },
+    {
+      "slug": "dist-8",
+      "status": "SSLError",
+      "http": 0
+    },
+    {
+      "slug": "dist-9",
+      "status": "SSLError",
+      "http": 0
+    },
+    {
+      "slug": "dist-10",
+      "status": "SSLError",
+      "http": 0
+    },
+    {
+      "slug": "dist-11",
+      "status": "SSLError",
+      "http": 0
+    },
+    {
+      "slug": "dist-12",
+      "status": "SSLError",
+      "http": 0
+    },
+    {
+      "slug": "dist-13",
+      "status": "SSLError",
+      "http": 0
+    },
+    {
+      "slug": "dist-14",
+      "status": "SSLError",
+      "http": 0
+    },
+    {
+      "slug": "dist-15",
+      "status": "SSLError",
+      "http": 0
+    },
+    {
+      "slug": "dist-20",
+      "status": "ConnectionError",
+      "http": 0
+    },
+    {
+      "slug": "dist-16",
+      "status": "SSLError",
+      "http": 0
+    },
+    {
+      "slug": "dist-17",
+      "status": "SSLError",
+      "http": 0
+    },
+    {
+      "slug": "dist-18",
+      "status": "SSLError",
+      "http": 0
+    },
+    {
+      "slug": "dist-19",
+      "status": "SSLError",
+      "http": 0
+    },
+    {
+      "slug": "dist-21",
+      "status": "SSLError",
+      "http": 0
+    },
+    {
+      "slug": "dist-22",
+      "status": "SSLError",
+      "http": 0
+    },
+    {
+      "slug": "dist-23",
+      "status": "SSLError",
+      "http": 0
+    },
+    {
+      "slug": "dist-25",
+      "status": "SSLError",
+      "http": 0
+    },
+    {
+      "slug": "dist-26",
+      "status": "SSLError",
+      "http": 0
+    },
+    {
+      "slug": "dist-27",
+      "status": "SSLError",
+      "http": 0
+    },
+    {
+      "slug": "dist-28",
+      "status": "SSLError",
+      "http": 0
+    },
+    {
+      "slug": "dist-29",
+      "status": "SSLError",
+      "http": 0
+    },
+    {
+      "slug": "dist-30",
+      "status": "SSLError",
+      "http": 0
+    },
+    {
+      "slug": "dist-31",
+      "status": "SSLError",
+      "http": 0
+    },
+    {
+      "slug": "dist-32",
+      "status": "SSLError",
+      "http": 0
+    },
+    {
+      "slug": "dist-33",
+      "status": "SSLError",
+      "http": 0
+    },
+    {
+      "slug": "dist-34",
+      "status": "SSLError",
+      "http": 0
+    },
+    {
+      "slug": "dist-35",
+      "status": "SSLError",
+      "http": 0
+    },
+    {
+      "slug": "dist-36",
+      "status": "SSLError",
+      "http": 0
+    },
+    {
+      "slug": "dist-37",
+      "status": "SSLError",
+      "http": 0
+    },
+    {
+      "slug": "dist-38",
+      "status": "SSLError",
+      "http": 0
+    },
+    {
+      "slug": "dist-39",
+      "status": "SSLError",
+      "http": 0
+    },
+    {
+      "slug": "dist-40",
+      "status": "SSLError",
+      "http": 0
+    },
+    {
+      "slug": "dist-41",
+      "status": "SSLError",
+      "http": 0
+    },
+    {
+      "slug": "dist-50",
+      "status": "SSLError",
+      "http": 0
+    },
+    {
+      "slug": "dist-51",
+      "status": "SSLError",
+      "http": 0
+    },
+    {
+      "slug": "dist-52",
+      "status": "SSLError",
+      "http": 0
+    },
+    {
+      "slug": "dist-53",
+      "status": "SSLError",
+      "http": 0
+    },
+    {
+      "slug": "dist-54",
+      "status": "SSLError",
+      "http": 0
+    },
+    {
+      "slug": "dist-55",
+      "status": "SSLError",
+      "http": 0
+    },
+    {
+      "slug": "dist-56",
+      "status": "SSLError",
+      "http": 0
+    },
+    {
+      "slug": "dist-57",
+      "status": "SSLError",
+      "http": 0
+    },
+    {
+      "slug": "dist-58",
+      "status": "SSLError",
+      "http": 0
+    },
+    {
+      "slug": "dist-59",
+      "status": "SSLError",
+      "http": 0
+    },
+    {
+      "slug": "upz-15",
+      "status": "ConnectionError",
+      "http": 0
+    },
+    {
+      "slug": "upz-372",
+      "status": "SSLError",
+      "http": 0
+    },
+    {
+      "slug": "upz-476",
+      "status": "ConnectionError",
+      "http": 0
+    },
+    {
+      "slug": "farm-2",
+      "status": "HTTPError",
+      "http": 0
+    },
+    {
+      "slug": "farm-3",
+      "status": "HTTPError",
+      "http": 0
+    },
+    {
+      "slug": "farm-14",
+      "status": "SSLError",
+      "http": 0
+    },
+    {
+      "slug": "farm-11",
+      "status": "HTTPError",
+      "http": 0
+    },
+    {
+      "slug": "farm-20",
+      "status": "SSLError",
+      "http": 0
+    },
+    {
+      "slug": "farm-15",
+      "status": "HTTPError",
+      "http": 0
+    },
+    {
+      "slug": "farm-22",
+      "status": "HTTPError",
+      "http": 0
+    },
+    {
+      "slug": "farm-24",
+      "status": "HTTPError",
+      "http": 0
+    },
+    {
+      "slug": "farm-26",
+      "status": "HTTPError",
+      "http": 0
+    },
+    {
+      "slug": "farm-34",
+      "status": "SSLError",
+      "http": 0
+    },
+    {
+      "slug": "farm-27",
+      "status": "HTTPError",
+      "http": 0
+    },
+    {
+      "slug": "farm-29",
+      "status": "HTTPError",
+      "http": 0
+    },
+    {
+      "slug": "farm-30",
+      "status": "HTTPError",
+      "http": 0
+    },
+    {
+      "slug": "farm-43",
+      "status": "SSLError",
+      "http": 0
+    },
+    {
+      "slug": "farm-32",
+      "status": "HTTPError",
+      "http": 0
+    },
+    {
+      "slug": "farm-37",
+      "status": "HTTPError",
+      "http": 0
+    },
+    {
+      "slug": "farm-39",
+      "status": "HTTPError",
+      "http": 0
+    },
+    {
+      "slug": "farm-40",
+      "status": "HTTPError",
+      "http": 0
+    },
+    {
+      "slug": "farm-38",
+      "status": "HTTPError",
+      "http": 0
+    },
+    {
+      "slug": "farm-44",
+      "status": "HTTPError",
+      "http": 0
+    },
+    {
+      "slug": "farm-49",
+      "status": "HTTPError",
+      "http": 0
+    },
+    {
+      "slug": "farm-51",
+      "status": "HTTPError",
+      "http": 0
+    },
+    {
+      "slug": "farm-53",
+      "status": "HTTPError",
+      "http": 0
+    },
+    {
+      "slug": "farm-56",
+      "status": "HTTPError",
+      "http": 0
+    },
+    {
+      "slug": "farm-57",
+      "status": "HTTPError",
+      "http": 0
+    },
+    {
+      "slug": "farm-62",
+      "status": "SSLError",
+      "http": 0
+    },
+    {
+      "slug": "farm-58",
+      "status": "HTTPError",
+      "http": 0
+    },
+    {
+      "slug": "farm-60",
+      "status": "HTTPError",
+      "http": 0
+    },
+    {
+      "slug": "farm-59",
+      "status": "HTTPError",
+      "http": 0
+    },
+    {
+      "slug": "farm-63",
+      "status": "HTTPError",
+      "http": 0
+    },
+    {
+      "slug": "farm-67",
+      "status": "SSLError",
+      "http": 0
+    },
+    {
+      "slug": "farm-64",
+      "status": "HTTPError",
+      "http": 0
+    },
+    {
+      "slug": "farm-70",
+      "status": "SSLError",
+      "http": 0
+    }
+  ],
+  "policy": "No existing officers deleted; updates matched by unique name within an office; ambiguous names skipped."
 }
