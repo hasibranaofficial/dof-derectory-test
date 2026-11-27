@@ -61,9 +61,30 @@ def extract_people(html, page_url):
     found = []
     for tr in soup.find_all("tr"):
         cells = [clean(c.get_text(" ", strip=True)) for c in tr.find_all(["td", "th"], recursive=False)]
-        cells = [c for c in cells if c]
-        if len(cells) < 2:
+        if len([c for c in cells if c]) < 2:
             continue
+        # Read BCS/cadre/batch columns from the table header when present.
+        bcs_value = ""
+        table = tr.find_parent("table")
+        if table:
+            for header_row in table.find_all("tr"):
+                if header_row is tr:
+                    break
+                headers = [clean(c.get_text(" ", strip=True)).lower() for c in header_row.find_all(["th", "td"], recursive=False)]
+                bcs_idx = next((i for i, h in enumerate(headers) if re.search(r"(বিসিএস|ক্যাডার|batch|cadre)", h, re.I)), None)
+                if bcs_idx is not None and bcs_idx < len(cells):
+                    bcs_value = cells[bcs_idx]
+                    break
+        # Also support explicit label/value cells when no header row exists.
+        if not bcs_value:
+            for i, cell in enumerate(cells):
+                if re.search(r"(বিসিএস|ক্যাডার|batch|cadre)", cell, re.I):
+                    candidate = re.sub(r"^(বিসিএস(?:\s*\(মৎস্য\))?|ক্যাডার|batch|cadre)(?:\s*ব্যাচ)?\s*[:：-]?\s*", "", cell, flags=re.I).strip()
+                    if candidate and candidate != cell:
+                        bcs_value = candidate
+                    elif i + 1 < len(cells):
+                        bcs_value = cells[i + 1]
+                    break
         name_idx = next((i for i,c in enumerate(cells) if is_probable_name(c)), None)
         if name_idx is None:
             continue
@@ -89,6 +110,7 @@ def extract_people(html, page_url):
             "name": cells[name_idx], "designation": cells[desig_idx],
             "email": email_match.group(0) if email_match else "",
             "phone": re.sub(r"[^\d০-৯+()-]", "", phone_match),
+            "bcs": bcs_value,
             "photo_url": photo_url
         })
     return found
@@ -188,9 +210,11 @@ def main():
                 if len(candidates) == 1:
                     old = candidates[0]
                     record_changed = False
-                    for field in ("designation", "email", "phone", "photo"):
+                    for field in ("designation", "email", "phone", "bcs", "photo"):
                         value = person.get(field) or ""
                         if not value:
+                            continue
+                        if field == "bcs" and value in ("0", "০", "-"):
                             continue
                         previous = old.get(field) or ""
                         if field == "photo" and previous.startswith("/photos/") and not (ROOT / "public" / previous.lstrip("/")).exists():
@@ -206,7 +230,7 @@ def main():
                         "branch": "ওয়েবসাইট থেকে শনাক্ত",
                         "name": person["name"], "designation": person["designation"],
                         "email": person.get("email", ""), "phone": person.get("phone", ""),
-                        "mobile": "", "room": "", "fax": "", "bcs": "", "joined": "",
+                        "mobile": "", "room": "", "fax": "", "bcs": person.get("bcs", ""), "joined": "",
                         "photo": person.get("photo", "")
                     }
                     current.append(new_person)
