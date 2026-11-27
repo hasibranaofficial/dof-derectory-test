@@ -36,6 +36,7 @@ export function Avatar({ src, name, size = 80 }: { src?: string | null; name: st
     return (
       <img
         src={photoSrc}
+        onError={(event) => { event.currentTarget.onerror = null; event.currentTarget.src = "/dof-derectory-test/person-placeholder.svg"; }}
         alt={name}
         width={size}
         height={Math.round(size * 1.2)}
