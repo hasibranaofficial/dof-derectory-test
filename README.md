@@ -16,3 +16,5 @@ This repository is a GitHub Pages-compatible static build of the Department of F
 
 ## Current limitations
 GitHub Pages is static hosting. Search, office pages and directory browsing work in the browser. Persistent admin CRUD, authentication and immediate writes require a separate backend and are intentionally not wired to the production DFD database.
+
+<!-- Photo recovery run trigger -->
