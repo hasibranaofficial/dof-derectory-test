@@ -1,7 +1,8 @@
 import Link from "next/link";
 import type { Office, Officer } from "@/lib/data";
 import { categoryBySlug, getDistrictOffice, getUpazilasOfDistrict } from "@/lib/data";
-import { groupBy, OfficerCard, OfficeUrl } from "@/components/ui";
+import { groupBy, OfficeUrl } from "@/components/ui";
+import DirectoryOfficer from "@/components/DirectoryOfficer";
 
 export default async function OfficeView({ office, people }: { office: Office; people: Officer[] }) {
   const cat = categoryBySlug(office.category);
@@ -103,7 +104,7 @@ export default async function OfficeView({ office, people }: { office: Office; p
               )}
               <div className="grid gap-3 md:grid-cols-2 xl:grid-cols-3">
                 {list.map((p) => (
-                  <OfficerCard key={p.id} p={p} />
+                  <DirectoryOfficer key={p.id} p={p} />
                 ))}
               </div>
             </section>
