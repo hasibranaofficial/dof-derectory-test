@@ -184,3 +184,5 @@ main.mx-auto.max-w-7xl .office-card { display:block !important; min-height:0; pa
 main.mx-auto.max-w-7xl .office-card > a { display:block; }
 main.mx-auto.max-w-7xl .office-card > div { margin-top:5px; }
 main.mx-auto.max-w-7xl .office-card > div:last-child { display:flex; justify-content:space-between; gap:8px; color:var(--mute); font-size:12px; }
+
+.directory-person-bcs { display:inline-block; margin-top:3px; color:var(--acc); font-size:12px; font-weight:600; line-height:1.35; }
