@@ -1,0 +1,36 @@
+"use client";
+
+import { useState } from "react";
+import type { Officer } from "@/lib/data";
+import { normDigits } from "@/lib/translit";
+
+export default function DirectoryOfficer({ p }: { p: Officer }) {
+  const [open, setOpen] = useState(false);
+  const tel = (s: string) => "tel:" + normDigits(s).replace(/[^\d+]/g, "");
+  const rows: [string, string, string?][] = [
+    ["মোবাইল", p.mobile || "" , p.mobile ? tel(p.mobile) : undefined],
+    ["ফোন", p.phone || "", p.phone ? tel(p.phone) : undefined],
+    ["ইমেইল", p.email || "", p.email ? "mailto:" + p.email : undefined],
+    ["কক্ষ", p.room && p.room !== "-" ? p.room : ""],
+    ["ফ্যাক্স", p.fax || ""],
+    ["ব্যাচ", p.bcs && p.bcs !== "০" && p.bcs !== "0" ? "বিসিএস " + p.bcs : ""]
+  ].filter(row => row[1]);
+  const initial = (p.name || p.designation || "?").trim().charAt(0);
+  return (
+    <article className={"directory-person" + (open ? " open" : "")}>
+      <div className="directory-person-row">
+        <button className="directory-person-main" onClick={() => setOpen(!open)} aria-expanded={open}>
+          {p.photo ? <img className="directory-avatar" src={p.photo} alt="" loading="lazy" /> : <span className="directory-avatar directory-avatar-fallback">{initial}</span>}
+          <span className="directory-person-text">
+            <span className="directory-person-name">{p.name || "নাম প্রদর্শিত নয়"}</span>
+            <span className="directory-person-designation">{p.designation}</span>
+          </span>
+          <svg className="directory-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true"><path d="m9 18 6-6-6-6" /></svg>
+        </button>
+      </div>
+      {open && <div className="directory-person-details">
+        {rows.length ? rows.map(([label, value, href]) => <div className="directory-detail" key={label}><b>{label}</b><span>{href ? <a href={href}>{value}</a> : value}</span></div>) : <p>অতিরিক্ত তথ্য নেই</p>}
+      </div>}
+    </article>
+  );
+}
