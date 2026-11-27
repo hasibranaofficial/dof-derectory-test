@@ -178,3 +178,9 @@ main.mx-auto.max-w-7xl .office-card { display:flex; align-items:center; justify-
 main.mx-auto.max-w-7xl .office-card h3 { font-size:16px; font-weight:500; line-height:1.4; }
 main.mx-auto.max-w-7xl .office-card .office-url { font-size:12px; }
 @media(max-width:420px) { .directory-person-details { margin-left:0; } .directory-detail { grid-template-columns:82px 1fr; } }
+
+/* Keep office entries as the same stacked link rows used in the live directory */
+main.mx-auto.max-w-7xl .office-card { display:block !important; min-height:0; padding:12px 0 !important; }
+main.mx-auto.max-w-7xl .office-card > a { display:block; }
+main.mx-auto.max-w-7xl .office-card > div { margin-top:5px; }
+main.mx-auto.max-w-7xl .office-card > div:last-child { display:flex; justify-content:space-between; gap:8px; color:var(--mute); font-size:12px; }
