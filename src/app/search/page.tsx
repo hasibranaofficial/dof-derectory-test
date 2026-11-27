@@ -1,63 +1,35 @@
+"use client";
+
+import { useMemo, useState } from "react";
 import Link from "next/link";
-import { OfficerCard, OfficeUrl, SearchBox, Tabs } from "@/components/ui";
-import { search } from "@/lib/search";
+import seed from "../../../data/seed.json";
+import { SearchBox, OfficeUrl, OfficerCard, OfficeCard } from "@/components/ui";
+import { normalizeText, normDigits } from "@/lib/translit";
 
-export const dynamic = "force-dynamic";
-
-export default async function SearchPage({ searchParams }: { searchParams: Promise<{ q?: string }> }) {
-  const { q = "" } = await searchParams;
-  const r = await search(q);
-  return (
-    <>
-      <Tabs />
-      <main className="mx-auto max-w-7xl px-4 py-6">
-        <div className="mb-5 rounded-2xl bg-emerald-800 p-4">
-          <SearchBox defaultValue={q} big />
-          <p className="mt-2 text-xs text-emerald-100">
-            বাংলা বা ইংরেজিতে নামের পূর্ণ বা আংশিক অংশ লিখুন। যেমন: <b>রহমান</b>, <b>rahman</b>, <b>md karim</b>, <b>উপপরিচালক</b>, <b>district officer</b>
-          </p>
-        </div>
-
-        {!q.trim() ? (
-          <p className="text-slate-500">কিছু লিখে অনুসন্ধান করুন।</p>
-        ) : r.totalOfficers + r.totalOffices === 0 ? (
-          <p className="rounded-xl bg-white p-6 text-slate-600 shadow-sm">“{q}” এর জন্য কোনো ফলাফল পাওয়া যায়নি।</p>
-        ) : (
-          <>
-            <p className="mb-4 text-sm text-slate-600">
-              “{q}” — {r.totalOfficers} জন কর্মকর্তা, {r.totalOffices}টি দপ্তর পাওয়া গেছে
-              {r.totalOfficers > r.officers.length ? ` (প্রথম ${r.officers.length} জন দেখানো হচ্ছে)` : ""}
-            </p>
-            {r.offices.length > 0 && (
-              <section className="mb-8">
-                <h2 className="mb-3 border-l-4 border-sky-600 pl-3 text-lg font-bold text-sky-900">দপ্তর</h2>
-                <div className="grid gap-3 md:grid-cols-2 xl:grid-cols-3">
-                  {r.offices.map(({ office }) => (
-                    <div key={office.id} className="rounded-xl border border-slate-200 bg-white p-3 shadow-sm">
-                      <Link href={`/office/${office.slug}`} className="font-semibold text-slate-900 hover:text-emerald-700">
-                        {office.name}
-                      </Link>
-                      <div className="mt-1">
-                        <OfficeUrl url={office.url} />
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </section>
-            )}
-            {r.officers.length > 0 && (
-              <section>
-                <h2 className="mb-3 border-l-4 border-emerald-600 pl-3 text-lg font-bold text-emerald-900">কর্মকর্তা</h2>
-                <div className="grid gap-3 md:grid-cols-2 xl:grid-cols-3">
-                  {r.officers.map(({ officer, office }) => (
-                    <OfficerCard key={officer.id} p={officer} office={office} />
-                  ))}
-                </div>
-              </section>
-            )}
-          </>
-        )}
-      </main>
-    </>
-  );
+type Raw = typeof seed[number];
+export default function SearchPage() {
+  const [query, setQuery] = useState("");
+  const q = normalizeText(normDigits(query)).trim();
+  const results = useMemo(() => {
+    if (!q) return { offices: [], officers: [] };
+    const officeRows = (seed as Raw[]).filter(o => normalizeText([o.name,o.name_en,o.district,o.upazila,o.division].filter(Boolean).join(" ")).includes(q));
+    const officerRows = (seed as Raw[]).flatMap(o => (o.officers ?? []).filter(p => normalizeText([p.name,p.designation,p.branch,o.name,o.district,o.upazila].filter(Boolean).join(" ")).includes(q)).map((p,i) => ({p,o,i})));
+    return { offices: officeRows.slice(0,60), officers: officerRows.slice(0,120) };
+  }, [q]);
+  return <>
+    <main className="mx-auto max-w-7xl px-4 py-6">
+      <div className="mb-5 rounded-2xl bg-emerald-800 p-4">
+        <form onSubmit={e => { e.preventDefault(); }} className="flex gap-2">
+          <input value={query} onChange={e => setQuery(e.target.value)} autoFocus placeholder="নাম, পদবি, জেলা বা দপ্তর খুঁজুন" className="min-w-0 flex-1 rounded-lg px-4 py-3 text-slate-900" />
+          <button className="rounded-lg bg-amber-400 px-5 font-semibold text-emerald-950">খুঁজুন</button>
+        </form>
+        <p className="mt-2 text-xs text-emerald-100">বাংলা বা ইংরেজিতে নাম, পদবি, জেলা, উপজেলা ও দপ্তরের নাম লিখুন।</p>
+      </div>
+      {!q ? <p className="text-slate-500">অনুসন্ধানের জন্য লিখুন।</p> : <>
+        <p className="mb-4 text-sm text-slate-600">“{query}” — {results.offices.length}টি দপ্তর এবং {results.officers.length} জন কর্মকর্তা (সর্বোচ্চ ১২০টি ফলাফল)</p>
+        {results.offices.length > 0 && <section className="mb-8"><h2 className="mb-3 text-lg font-bold text-sky-900">দপ্তর</h2><div className="grid gap-3 md:grid-cols-2 xl:grid-cols-3">{results.offices.map(o => <div key={o.slug} className="rounded-xl border bg-white p-3"><Link href={`/office/${o.slug}`} className="font-semibold hover:text-emerald-700">{o.name}</Link><div className="mt-1"><OfficeUrl url={o.url} /></div></div>)}</div></section>}
+        {results.officers.length > 0 && <section><h2 className="mb-3 text-lg font-bold text-emerald-900">কর্মকর্তা</h2><div className="grid gap-3 md:grid-cols-2 xl:grid-cols-3">{results.officers.map(({p,o,i}) => <article key={o.slug+"-"+i} className="flex gap-3 rounded-xl border bg-white p-3"><div className="min-w-0"><div className="font-semibold">{p.name}</div><div className="text-sm text-emerald-800">{p.designation}</div><Link className="text-xs text-slate-500 hover:underline" href={`/office/${o.slug}`}>{o.name}</Link>{p.mobile && <div className="text-sm">{p.mobile}</div>}{p.email && <div className="text-sm">{p.email}</div>}</div></article>)}</div></section>}
+      </>}
+    </main>
+  </>;
 }
