@@ -1,9 +1,12 @@
 import Link from "next/link";
-import { notFound, redirect } from "next/navigation";
+import { notFound } from "next/navigation";
 import { Avatar, groupBy, OfficeCard, OfficeUrl, Tabs } from "@/components/ui";
-import { categoryBySlug, getFarmManagers, getOfficesByCategory } from "@/lib/data";
+import { CATEGORIES, categoryBySlug, getFarmManagers, getOfficesByCategory } from "@/lib/data";
 
-export const dynamic = "force-dynamic";
+export const dynamicParams = false;
+export function generateStaticParams() {
+  return CATEGORIES.filter((category) => category.slug !== "hq").map((category) => ({ cat: category.slug }));
+}
 
 const DIV_ORDER = ["ঢাকা", "চট্টগ্রাম", "খুলনা", "রাজশাহী", "রংপুর", "বরিশাল", "ময়মনসিংহ", "সিলেট"];
 const divRank = (d: string | null) => {
@@ -13,7 +16,6 @@ const divRank = (d: string | null) => {
 
 export default async function CategoryPage({ params }: { params: Promise<{ cat: string }> }) {
   const { cat: slug } = await params;
-  if (slug === "hq") redirect("/");
   const cat = categoryBySlug(slug);
   if (!cat) notFound();
   const rows = await getOfficesByCategory(slug);
