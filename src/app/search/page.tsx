@@ -4,7 +4,7 @@ import { useMemo, useState } from "react";
 import Link from "next/link";
 import seed from "../../../data/seed.json";
 import { SearchBox, OfficeUrl, OfficerCard, OfficeCard } from "@/components/ui";
-import { normalizeText, normDigits } from "@/lib/translit";
+import { EN_BN, normalizeText, normDigits, skeleton, tokenize } from "@/lib/translit";
 
 type Raw = typeof seed[number];
 export default function SearchPage() {
@@ -12,8 +12,16 @@ export default function SearchPage() {
   const q = normalizeText(normDigits(query)).trim();
   const results = useMemo(() => {
     if (!q) return { offices: [], officers: [] };
-    const officeRows = (seed as Raw[]).filter(o => normalizeText([o.name,o.name_en,o.district,o.upazila,o.division].filter(Boolean).join(" ")).includes(q));
-    const officerRows = (seed as Raw[]).flatMap(o => (o.officers ?? []).filter(p => normalizeText([p.name,p.designation,p.branch,o.name,o.district,o.upazila].filter(Boolean).join(" ")).includes(q)).map((p,i) => ({p,o,i})));
+    const terms = tokenize(q).map(token => [token, ...(EN_BN[token] ?? [])]);
+    const matches = (value: string) => {
+      const normalized = normalizeText(value);
+      const key = skeleton(normalized);
+      return terms.every(alternatives => alternatives.some(term =>
+        normalized.includes(normalizeText(term)) || (skeleton(term).length >= 2 && key.includes(skeleton(term)))
+      ));
+    };
+    const officeRows = (seed as Raw[]).filter(o => matches([o.name,o.name_en,o.district,o.upazila,o.division].filter(Boolean).join(" ")));
+    const officerRows = (seed as Raw[]).flatMap(o => (o.officers ?? []).filter(p => matches([p.name,p.designation,p.branch,o.name,o.district,o.upazila].filter(Boolean).join(" "))).map((p,i) => ({p,o,i})));
     return { offices: officeRows.slice(0,60), officers: officerRows.slice(0,120) };
   }, [q]);
   return <>
