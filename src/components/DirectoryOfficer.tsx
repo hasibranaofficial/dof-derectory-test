@@ -7,14 +7,15 @@ import { normDigits } from "@/lib/translit";
 export default function DirectoryOfficer({ p }: { p: Officer }) {
   const [open, setOpen] = useState(false);
   const tel = (s: string) => "tel:" + normDigits(s).replace(/[^\d+]/g, "");
-  const rows: [string, string, string?][] = [
+  const allRows: [string, string, (string | undefined)?][] = [
     ["মোবাইল", p.mobile || "" , p.mobile ? tel(p.mobile) : undefined],
     ["ফোন", p.phone || "", p.phone ? tel(p.phone) : undefined],
     ["ইমেইল", p.email || "", p.email ? "mailto:" + p.email : undefined],
     ["কক্ষ", p.room && p.room !== "-" ? p.room : ""],
     ["ফ্যাক্স", p.fax || ""],
     ["ব্যাচ", p.bcs && p.bcs !== "০" && p.bcs !== "0" ? "বিসিএস " + p.bcs : ""]
-  ].filter(row => row[1]);
+  ];
+  const rows = allRows.filter((row) => Boolean(row[1]));
   const initial = (p.name || p.designation || "?").trim().charAt(0);
   return (
     <article className={"directory-person" + (open ? " open" : "")}>
