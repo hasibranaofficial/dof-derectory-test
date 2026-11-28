@@ -27,7 +27,7 @@ export default function DirectoryOfficer({ p }: { p: Officer }) {
     ["ব্যাচ", p.bcs && p.bcs !== "০" && p.bcs !== "0" ? "বিসিএস " + p.bcs : ""]
   ];
   const rows = allRows.filter((row) => Boolean(row[1]));
-  const listDesignation = (p.designation || "").replace(/\\s*[（(]\\s*বিসিএস\\s*[-–—:]?\\s*[^）)]*[）)]/gi, "").replace(/\\s+/g, " ").trim();\n  const initial = (p.name || p.designation || "?").trim().charAt(0);
+  const listDesignation = (p.designation || "").replace(/\s*[（(]\s*বিসিএস\s*[-–—:]?\s*[^）)]*[）)]/gi, "").replace(/\s+/g, " ").trim();\n  const initial = (p.name || p.designation || "?").trim().charAt(0);
   return (
     <article className={"directory-person" + (open ? " open" : "")}>
       <div className="directory-person-row">
@@ -35,8 +35,7 @@ export default function DirectoryOfficer({ p }: { p: Officer }) {
           {imageSrc && !imageFailed ? <img className="directory-avatar" src={imageSrc} alt="" loading="lazy" decoding="async" onError={handleImageError} /> : <span className="directory-avatar directory-avatar-fallback">{initial}</span>}
           <span className="directory-person-text">
             <span className="directory-person-name">{p.name || "নাম প্রদর্শিত নয়"}</span>
-            <span className="directory-person-designation">{p.designation}</span>
-            {p.bcs && p.bcs !== "০" && p.bcs !== "0" && <span className="directory-person-bcs">বিসিএস ব্যাচ: {p.bcs}</span>}
+            <span className="directory-person-designation">{listDesignation || p.designation}</span>
           </span>
           <svg className="directory-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true"><path d="m9 18 6-6-6-6" /></svg>
         </button>
