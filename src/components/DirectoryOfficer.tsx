@@ -27,7 +27,7 @@ export default function DirectoryOfficer({ p }: { p: Officer }) {
     ["ব্যাচ", p.bcs && p.bcs !== "০" && p.bcs !== "0" ? "বিসিএস " + p.bcs : ""]
   ];
   const rows = allRows.filter((row) => Boolean(row[1]));
-  const initial = (p.name || p.designation || "?").trim().charAt(0);
+  const listDesignation = (p.designation || "").replace(/\\s*[（(]\\s*বিসিএস\\s*[-–—:]?\\s*[^）)]*[）)]/gi, "").replace(/\\s+/g, " ").trim();\n  const initial = (p.name || p.designation || "?").trim().charAt(0);
   return (
     <article className={"directory-person" + (open ? " open" : "")}>
       <div className="directory-person-row">
