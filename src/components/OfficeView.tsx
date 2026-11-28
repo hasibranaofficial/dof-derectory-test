@@ -3,6 +3,7 @@ import type { Office, Officer } from "@/lib/data";
 import { categoryBySlug, getDistrictOffice, getUpazilasOfDistrict } from "@/lib/data";
 import { groupBy, OfficeUrl } from "@/components/ui";
 import DirectoryOfficer from "@/components/DirectoryOfficer";
+import BranchDirectory from "@/components/BranchDirectory";
 
 export default async function OfficeView({ office, people }: { office: Office; people: Officer[] }) {
   const cat = categoryBySlug(office.category);
@@ -70,7 +71,9 @@ export default async function OfficeView({ office, people }: { office: Office; p
           <p className="mt-3 text-sm text-slate-500">মোট কর্মকর্তা: {people.length} জন</p>
         </section>
 
-        {hasBranches && (
+        {office.slug === "hq" ? (
+          <BranchDirectory branches={branches.filter(([b]) => Boolean(b))} />
+        ) : hasBranches && (
           <div className="mt-5 flex flex-wrap gap-2">
             {branches.map(([b, list], i) => (
               <a
@@ -93,7 +96,7 @@ export default async function OfficeView({ office, people }: { office: Office; p
               </>
             )}
           </div>
-        ) : (
+        ) : office.slug === "hq" ? null : (
           branches.map(([b, list], i) => (
             <section key={i} id={`b-${i}`} className="mt-6">
               {hasBranches && b && (
