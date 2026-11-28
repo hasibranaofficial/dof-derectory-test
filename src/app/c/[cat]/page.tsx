@@ -33,9 +33,9 @@ export default async function CategoryPage({ params }: { params: Promise<{ cat: 
     const byDiv = groupBy(districts, (r) => r.office.division ?? "অন্যান্য").sort((a, b) => divRank(a[0]) - divRank(b[0]));
     body = byDiv.map(([div, list]) => (
       <section key={div} className="mt-8">
-        <h2 className="mb-3 border-l-4 border-emerald-600 pl-3 text-xl font-bold text-emerald-900">
+        {div !== "অন্যান্য" && <h2 className="mb-3 border-l-4 border-emerald-600 pl-3 text-xl font-bold text-emerald-900">
           {div} বিভাগ <span className="text-sm font-normal text-slate-500">({list.length} জেলা)</span>
-        </h2>
+        </h2>}
         <div className="grid items-start gap-3 md:grid-cols-2 xl:grid-cols-3">
           {list.map(({ office, officerCount }) => {
             const ups = upByDist.get(office.district ?? "") ?? [];
@@ -73,9 +73,9 @@ export default async function CategoryPage({ params }: { params: Promise<{ cat: 
     const byDiv = groupBy(rows, (r) => r.office.division ?? "অন্যান্য").sort((a, b) => divRank(a[0]) - divRank(b[0]));
     body = byDiv.map(([div, list]) => (
       <section key={div} className="mt-8">
-        <h2 className="mb-3 border-l-4 border-emerald-600 pl-3 text-xl font-bold text-emerald-900">
-          {div === "অন্যান্য" ? div : `${div} বিভাগ`} <span className="text-sm font-normal text-slate-500">({list.length}টি খামার)</span>
-        </h2>
+        {div !== "অন্যান্য" && <h2 className="mb-3 border-l-4 border-emerald-600 pl-3 text-xl font-bold text-emerald-900">
+          {div} বিভাগ <span className="text-sm font-normal text-slate-500">({list.length}টি খামার)</span>
+        </h2>}
         <div className="grid gap-3 md:grid-cols-2 xl:grid-cols-3">
           {list.map(({ office }) => {
             const m = mgr.get(office.id);
