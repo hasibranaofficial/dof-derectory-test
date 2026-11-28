@@ -25,7 +25,7 @@ SUPABASE_URL = "https://hlgtsigojqmpyqrrypye.supabase.co"
 PHOTO_DIR = ROOT / "public" / "photos"
 UA = "DFD-Directory-Monitor/1.0 (+https://github.com/hasibranaofficial/dof-derectory-test)"
 TIMEOUT = 12
-MAX_STAFF_LINKS = 2
+MAX_STAFF_LINKS = 40
 
 def clean(v):
     return re.sub(r"\s+", " ", str(v or "")).strip()
@@ -55,7 +55,9 @@ def staff_links(html, base):
         href = urljoin(base, a["href"])
         if urlparse(href).netloc != urlparse(base).netloc:
             continue
-        if re.search(r"(কর্মকর্তা|কর্মচারী|জনবল|staff|officer|employee|personnel|team|directory|who.we.are)", label + " " + href, re.I):
+        staff_hint = re.search(r"(কর্মকর্তা|কর্মচারী|জনবল|staff|officer|employee|personnel|team|directory|who.we.are|profile|প্রোফাইল|জীবনবৃত্তান্ত)", label + " " + href, re.I)
+        row_link = a.find_parent(["tr", "article", "li"]) is not None and is_probable_name(label)
+        if staff_hint or row_link:
             if href.startswith(("http://", "https://")) and href not in candidates and href != base:
                 candidates.append(href)
     return candidates[:MAX_STAFF_LINKS]
@@ -110,14 +112,91 @@ def extract_people(html, page_url):
             if not photo_src and image.get("srcset"):
                 photo_src = clean(image.get("srcset")).split(",")[0].strip().split(" ")[0]
         photo_url = urljoin(page_url, photo_src) if photo_src else ""
+        phone_value = re.sub(r"[^\d০-৯+()-]", "", phone_match)
         found.append({
             "name": cells[name_idx], "designation": cells[desig_idx],
             "email": email_match.group(0) if email_match else "",
-            "phone": re.sub(r"[^\d০-৯+()-]", "", phone_match),
+            "phone": phone_value,
+            "mobile": phone_value if re.search(r"(মোবাইল|mobile|cell)", " ".join(cells), re.I) else "",
+            "room": next((re.sub(r"^(কক্ষ|রুম|room|কক্ষ নং)\s*[:：-]?\s*", "", c, flags=re.I) for c in cells if re.search(r"(কক্ষ|রুম|room)", c, re.I)), ""),
+            "fax": next((re.sub(r"^(ফ্যাক্স|fax)\s*[:：-]?\s*", "", c, flags=re.I) for c in cells if re.search(r"(ফ্যাক্স|fax)", c, re.I)), ""),
             "bcs": bcs_value,
             "photo_url": photo_url
         })
-    return found
+
+    selectors = ["article", "[class*=officer]", "[class*=employee]", "[class*=staff]", "[class*=person]", "[class*=profile]", "[class*=team]", "[class*=member]", "[class*=card]", ".views-row"]
+    seen_blocks = set()
+    for selector in selectors:
+        try:
+            blocks = soup.select(selector)
+        except Exception:
+            continue
+        for block in blocks:
+            marker = id(block)
+            if marker in seen_blocks:
+                continue
+            seen_blocks.add(marker)
+            text = clean(block.get_text(" ", strip=True))
+            if len(text) < 12 or len(text) > 1800:
+                continue
+            email = re.search(r"[\w.+-]+@[\w.-]+\.[A-Za-z]{2,}", text)
+            phones = re.findall(r"(?:\+?৮৮০|\+?880|0|০)[\d০-৯ +()-]{7,}", text)
+            name = ""
+            for node in block.find_all(["h1","h2","h3","h4","h5","strong","b","a"], limit=12):
+                candidate = clean(node.get_text(" ", strip=True))
+                if is_probable_name(candidate) and not is_probable_designation(candidate):
+                    name = candidate
+                    break
+            designation = ""
+            for node in block.find_all(["h1","h2","h3","h4","h5","p","span","div","td","strong"], limit=30):
+                candidate = clean(node.get_text(" ", strip=True))
+                if candidate != name and is_probable_designation(candidate):
+                    designation = candidate
+                    break
+            if not name or not designation:
+                continue
+            image = block.find("img")
+            photo_src = ""
+            if image:
+                for attr in ("src","data-src","data-original","data-lazy-src","data-original-src"):
+                    candidate = clean(image.get(attr))
+                    if candidate and not candidate.startswith("data:"):
+                        photo_src = candidate
+                        break
+            bcs = ""
+            bcs_match = re.search(r"(?:বিসিএস|BCS|ক্যাডার|cadre|batch)[^০-৯\d]{0,12}([০-৯\d]{1,3}(?:তম|th)?)", text, re.I)
+            if bcs_match:
+                bcs = bcs_match.group(1)
+            found.append({
+                "name": name, "designation": designation,
+                "email": email.group(0) if email else "",
+                "phone": re.sub(r"[^\d০-৯+()-]", "", phones[0]) if phones else "",
+                "mobile": re.sub(r"[^\d০-৯+()-]", "", phones[0]) if phones and re.search(r"(মোবাইল|mobile|cell)", text, re.I) else "",
+                "room": "", "fax": "", "bcs": bcs,
+                "photo_url": urljoin(page_url, photo_src) if photo_src else ""
+            })
+    for script in soup.find_all("script", type="application/ld+json"):
+        try:
+            payload = json.loads(script.string or script.get_text())
+            nodes = payload if isinstance(payload, list) else [payload]
+            for node in nodes:
+                if not isinstance(node, dict):
+                    continue
+                if isinstance(node.get("@graph"), list):
+                    nodes.extend(x for x in node["@graph"] if isinstance(x, dict))
+                if str(node.get("@type", "")).lower() in ("person", "employee"):
+                    name, job = clean(node.get("name")), clean(node.get("jobTitle"))
+                    if is_probable_name(name) and job:
+                        found.append({"name":name,"designation":job,"email":clean(node.get("email")),"phone":clean(node.get("telephone")),"mobile":"","room":"","fax":"","bcs":"","photo_url":urljoin(page_url, clean(node.get("image"))) if node.get("image") else ""})
+        except Exception:
+            pass
+    unique = {}
+    for person in found:
+        key = (norm(person.get("name")), norm(person.get("designation")))
+        if key[0] and key[1]:
+            previous = unique.get(key, {})
+            unique[key] = {k: (person.get(k) or previous.get(k) or "") for k in set(previous) | set(person)}
+    return list(unique.values())
 
 def save_photo(url):
     if not url:
@@ -189,7 +268,7 @@ def fetch_office(item):
             return item["slug"], [], "not_html", response.status_code
         pages = [response.url] + staff_links(response.text, response.url)
         all_people = []
-        for page in pages:
+        for page in pages[:MAX_STAFF_LINKS + 1]:
             try:
                 r = requests.get(page, headers={"User-Agent": UA, "Accept": "text/html"}, timeout=TIMEOUT)
                 r.raise_for_status()
@@ -246,7 +325,7 @@ def main():
                 if len(candidates) == 1:
                     old = candidates[0]
                     record_changed = False
-                    for field in ("designation", "email", "phone", "bcs", "photo"):
+                    for field in ("designation", "email", "phone", "mobile", "room", "fax", "bcs", "photo"):
                         value = person.get(field) or ""
                         if not value:
                             continue
@@ -266,7 +345,7 @@ def main():
                         "branch": "",
                         "name": person["name"], "designation": person["designation"],
                         "email": person.get("email", ""), "phone": person.get("phone", ""),
-                        "mobile": "", "room": "", "fax": "", "bcs": person.get("bcs", ""), "joined": "",
+                        "mobile": person.get("mobile", ""), "room": person.get("room", ""), "fax": person.get("fax", ""), "bcs": person.get("bcs", ""), "joined": "",
                         "photo": person.get("photo", "")
                     }
                     current.append(new_person)
@@ -302,7 +381,7 @@ def main():
         "supabase_photo_sync_enabled": bool(supabase_key),
         "photo_files_on_disk": len(list(PHOTO_DIR.glob("*"))) if PHOTO_DIR.exists() else 0,
         "failed_sources": len(failures), "failures_sample": failures[:100],
-        "policy": "No existing officers deleted; updates matched by unique name within an office; ambiguous names skipped."
+        "policy": "Extracts staff tables, profile cards and JSON-LD; follows up to 40 same-host staff/profile links; existing records are retained; ambiguous names are skipped; source failures are reported for retry."
     }
     if changed_fields:
         DATA.write_text(json.dumps(data, ensure_ascii=False, separators=(",", ":")) + "\n", encoding="utf-8")
