@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { Avatar, groupBy, OfficeCard, OfficeDomain } from "@/components/ui";
+import { Avatar, groupBy, OfficeCard } from "@/components/ui";
 import { CATEGORIES, categoryBySlug, getFarmManagers, getOfficesByCategory } from "@/lib/data";
 
 export const dynamicParams = false;
@@ -44,9 +44,6 @@ export default async function CategoryPage({ params }: { params: Promise<{ cat: 
                 <Link href={`/office/${office.slug}`} className="text-[15px] font-semibold text-slate-900 hover:text-emerald-700">
                   {office.name}
                 </Link>
-                <div className="mt-1.5">
-                  <OfficeDomain url={office.url} />
-                </div>
                 <p className="mt-1 text-xs text-slate-500">
                   {officerCount} জন কর্মকর্তা{office.email ? ` · ${office.email}` : ""}
                 </p>
@@ -93,9 +90,6 @@ export default async function CategoryPage({ params }: { params: Promise<{ cat: 
                     মৎস্য বীজ উৎপাদন খামার{office.district ? ` · জেলা: ${office.district}` : ""}
                   </p>
                   {m?.name && <p className="mt-1 text-sm text-emerald-800">ব্যবস্থাপক: {m.name}</p>}
-                  <div className="mt-1">
-                    <OfficeDomain url={office.url} />
-                  </div>
                 </div>
               </div>
             );
