@@ -1,4 +1,5 @@
 name: Build, refresh and deploy DFD test site
+# A fresh workflow run avoids duplicate github-pages artifacts after retries.
 
 on:
   push:
