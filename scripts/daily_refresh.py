@@ -263,7 +263,7 @@ def main():
                         updated_records += 1
                 elif not candidates:
                     new_person = {
-                        "branch": "ওয়েবসাইট থেকে শনাক্ত",
+                        "branch": "",
                         "name": person["name"], "designation": person["designation"],
                         "email": person.get("email", ""), "phone": person.get("phone", ""),
                         "mobile": "", "room": "", "fax": "", "bcs": person.get("bcs", ""), "joined": "",
