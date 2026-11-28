@@ -35,7 +35,7 @@ def norm(v):
 
 def extract_bcs(value):
     """Read BCS/cadre batch whether it appears in a dedicated field or designation text."""
-    match = re.search(r"(?:বিসিএস|BCS|ক্যাডার|cadre)(?:\\s*ব্যাচ)?\\s*[-–—:：]?\\s*([০-৯\\d]{1,3}\\s*(?:তম|th)?)", clean(value), re.I)
+    match = re.search(r"(?:বিসিএস|BCS|ক্যাডার|cadre)(?:\s*ব্যাচ)?\s*[-–—:：]?\s*([০-৯\d]{1,3}\s*(?:তম|th)?)", clean(value), re.I)
     return clean(match.group(1)) if match else ""
 
 def is_probable_name(value):
@@ -96,7 +96,9 @@ def extract_people(html, page_url):
                     elif i + 1 < len(cells):
                         bcs_value = cells[i + 1]
                     break
-        if not bcs_value:\n            bcs_value = extract_bcs(" ".join(cells))\n        name_idx = next((i for i,c in enumerate(cells) if is_probable_name(c)), None)
+        if not bcs_value:
+            bcs_value = extract_bcs(" ".join(cells))
+        name_idx = next((i for i,c in enumerate(cells) if is_probable_name(c)), None)
         if name_idx is None:
             continue
         desig_idx = next((i for i,c in enumerate(cells) if i != name_idx and is_probable_designation(c)), None)
