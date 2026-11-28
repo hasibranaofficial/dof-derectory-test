@@ -14,7 +14,7 @@ export interface Office {
 export interface Officer {
   id: number; officeId: number; branch: string | null; sort: number; name: string;
   designation: string; email: string | null; phone: string | null; mobile: string | null;
-  room: string | null; fax: string | null; bcs: string | null; joined: string | null; photo: string | null; fallbackPhoto: string | null;
+  room: string | null; fax: string | null; bcs: string | null; joined: string | null; photo: string | null; fallbackPhoto?: string | null;
 }
 type SeedOfficer = Partial<Omit<Officer, "id" | "officeId">> & { name?: string; designation?: string };
 type SeedOffice = {
