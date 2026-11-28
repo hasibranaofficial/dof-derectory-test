@@ -9,7 +9,7 @@ are left untouched. New staff require a clear table row with both name and desig
 """
 from __future__ import annotations
 import concurrent.futures as cf
-import hashlib, json, re
+import hashlib, json, re, os, mimetypes
 from datetime import datetime, timezone
 from pathlib import Path
 from urllib.parse import urljoin, urlparse
@@ -19,6 +19,8 @@ from bs4 import BeautifulSoup
 ROOT = Path(__file__).resolve().parents[1]
 DATA = ROOT / "data" / "seed.json"
 REPORT = ROOT / "data" / "last-refresh.json"
+PHOTO_MAP = ROOT / "data" / "photo-map.json"
+SUPABASE_URL = "https://hlgtsigojqmpyqrrypye.supabase.co"
 PHOTO_DIR = ROOT / "public" / "photos"
 UA = "DFD-Directory-Monitor/1.0 (+https://github.com/hasibranaofficial/dof-derectory-test)"
 TIMEOUT = 12
@@ -147,6 +149,34 @@ def save_photo(url):
     except Exception:
         return ""
 
+
+def upload_supabase_photo(local_path, remote_path, secret):
+    """Upload/replace one officer photo in the public Supabase bucket."""
+    if not secret or not local_path or not remote_path:
+        return False
+    file_path = ROOT / "public" / local_path.lstrip("/")
+    if not file_path.is_file():
+        return False
+    mime = mimetypes.guess_type(file_path.name)[0] or "application/octet-stream"
+    try:
+        with file_path.open("rb") as photo_file:
+            response = requests.post(
+                f"{SUPABASE_URL}/storage/v1/object/photos/{remote_path}",
+                headers={
+                    "apikey": secret,
+                    **({"Authorization": f"Bearer {secret}"} if secret.startswith("eyJ") else {}),
+                    "Content-Type": mime,
+                    "x-upsert": "true",
+                },
+                data=photo_file,
+                timeout=30,
+            )
+        response.raise_for_status()
+        return True
+    except Exception as exc:
+        print(f"Supabase photo upload failed for {remote_path}: {type(exc).__name__}")
+        return False
+
 def fetch_office(item):
     url = clean(item.get("url"))
     if not url.startswith(("http://", "https://")):
@@ -184,6 +214,10 @@ def main():
     changed_fields = added = updated_records = scanned = ok = 0
     photos_saved = photo_urls_found = 0
     failures = []
+    supabase_key = os.environ.get("SUPABASE_SERVICE_ROLE_KEY", "").strip()
+    photo_map = json.loads(PHOTO_MAP.read_text(encoding="utf-8")) if PHOTO_MAP.exists() else {}
+    supabase_photo_uploads = 0
+    supabase_photo_failures = 0
     office_by_slug = {office.get("slug"): office for office in data}
     with cf.ThreadPoolExecutor(max_workers=10) as pool:
         futures = [pool.submit(fetch_office, office) for office in data if office.get("url")]
@@ -238,6 +272,22 @@ def main():
                     by_name.setdefault(key, []).append(new_person)
                     added += 1
                     changed_fields += 1
+                # Sync the latest official image to Supabase Storage.
+                if supabase_key and person.get("photo"):
+                    photo_key = f"{person['name']}|||{person['designation']}"
+                    office_map = photo_map.setdefault(slug, {})
+                    remote_path = office_map.get(photo_key)
+                    if not remote_path:
+                        ext = Path(person["photo"]).suffix or ".jpg"
+                        identity = hashlib.sha256(f"{slug}|||{photo_key}".encode("utf-8")).hexdigest()[:24]
+                        remote_path = f"auto/{slug}/{identity}{ext}"
+                    if upload_supabase_photo(person["photo"], remote_path, supabase_key):
+                        if office_map.get(photo_key) != remote_path:
+                            office_map[photo_key] = remote_path
+                            changed_fields += 1
+                        supabase_photo_uploads += 1
+                    else:
+                        supabase_photo_failures += 1
                 # Ambiguous duplicate names are intentionally not auto-merged.
     finished = datetime.now(timezone.utc)
     report = {
@@ -246,12 +296,17 @@ def main():
         "sources_with_staff_tables": ok, "new_officers": added,
         "updated_officer_records": updated_records, "changed_fields": changed_fields,
         "photo_urls_found": photo_urls_found, "photos_saved": photos_saved,
+        "supabase_photo_uploads": supabase_photo_uploads,
+        "supabase_photo_failures": supabase_photo_failures,
+        "supabase_photo_sync_enabled": bool(supabase_key),
         "photo_files_on_disk": len(list(PHOTO_DIR.glob("*"))) if PHOTO_DIR.exists() else 0,
         "failed_sources": len(failures), "failures_sample": failures[:100],
         "policy": "No existing officers deleted; updates matched by unique name within an office; ambiguous names skipped."
     }
     if changed_fields:
         DATA.write_text(json.dumps(data, ensure_ascii=False, separators=(",", ":")) + "\n", encoding="utf-8")
+    if supabase_key and supabase_photo_uploads:
+        PHOTO_MAP.write_text(json.dumps(photo_map, ensure_ascii=False, separators=(",", ":")) + "\n", encoding="utf-8")
     REPORT.write_text(json.dumps(report, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     print(json.dumps(report, ensure_ascii=False, indent=2))
 
