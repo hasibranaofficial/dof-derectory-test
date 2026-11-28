@@ -25,7 +25,13 @@ HEADERS = {"User-Agent": "DFD-Directory-Photo-Mirror/1.0"}
 TIMEOUT = 25
 
 def read_json(path):
-    return json.loads(path.read_text(encoding="utf-8")) if path.exists() else {}
+    if not path.exists():
+        return {}
+    raw = path.read_text(encoding="utf-8").strip()
+    # Recover files written by the earlier version with a literal \\n suffix.
+    if raw.endswith(chr(92) + "n"):
+        raw = raw[:-2].rstrip()
+    return json.loads(raw) if raw else {}
 
 def download_one(item):
     slug, key, remote = item
@@ -87,7 +93,7 @@ with cf.ThreadPoolExecutor(max_workers=12) as pool:
             if len(failures) < 30:
                 failures.append({"office": slug, "officer": key.split("|||")[0], "status": status})
 for path, data in [(LOCAL_MAP_FILE, local_map), (STATE_FILE, state)]:
-    path.write_text(json.dumps(data, ensure_ascii=False, separators=(",", ":")) + "\\n", encoding="utf-8")
+    path.write_text(json.dumps(data, ensure_ascii=False, separators=(",", ":")) + chr(10), encoding="utf-8")
 report = {**counts, "finished_at": __import__("datetime").datetime.now(__import__("datetime").timezone.utc).isoformat(), "failures_sample": failures}
-REPORT_FILE.write_text(json.dumps(report, ensure_ascii=False, indent=2) + "\\n", encoding="utf-8")
+REPORT_FILE.write_text(json.dumps(report, ensure_ascii=False, indent=2) + chr(10), encoding="utf-8")
 print(json.dumps(report, ensure_ascii=False))
