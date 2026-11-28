@@ -1,8 +1,10 @@
 import seed from "../../data/seed.json";
 import photoMap from "../../data/photo-map.json";
+import localPhotoMap from "../../data/photo-local-map.json";
 
 const SUPABASE_PHOTO_BASE = "https://hlgtsigojqmpyqrrypye.supabase.co/storage/v1/object/public/photos/";
 const officerPhotoMap = photoMap as Record<string, Record<string, string>>;
+const localOfficerPhotoMap = localPhotoMap as Record<string, Record<string, string>>;
 
 export interface Office {
   id: number; slug: string; category: string; name: string; nameEn: string | null;
@@ -12,7 +14,7 @@ export interface Office {
 export interface Officer {
   id: number; officeId: number; branch: string | null; sort: number; name: string;
   designation: string; email: string | null; phone: string | null; mobile: string | null;
-  room: string | null; fax: string | null; bcs: string | null; joined: string | null; photo: string | null;
+  room: string | null; fax: string | null; bcs: string | null; joined: string | null; photo: string | null; fallbackPhoto: string | null;
 }
 type SeedOfficer = Partial<Omit<Officer, "id" | "officeId">> & { name?: string; designation?: string };
 type SeedOffice = {
@@ -33,9 +35,12 @@ const officers: Officer[] = records.flatMap((o, i) => (o.officers ?? []).map((p,
   name: p.name ?? "", designation: p.designation ?? "", email: p.email ?? null,
   phone: p.phone ?? null, mobile: p.mobile ?? null, room: p.room ?? null,
   fax: p.fax ?? null, bcs: p.bcs ?? null, joined: p.joined ?? null,
-  photo: officerPhotoMap[o.slug]?.[`${p.name ?? ""}|||${p.designation ?? ""}`]
-    ? SUPABASE_PHOTO_BASE + officerPhotoMap[o.slug][`${p.name ?? ""}|||${p.designation ?? ""}`]
-    : p.photo ? (p.photo.startsWith("http") ? p.photo : "/dof-derectory-test" + p.photo) : null,
+  photo: localOfficerPhotoMap[o.slug]?.[`${p.name ?? ""}|||${p.designation ?? ""}`]
+    ? "/dof-derectory-test" + localOfficerPhotoMap[o.slug][`${p.name ?? ""}|||${p.designation ?? ""}`]
+    : officerPhotoMap[o.slug]?.[`${p.name ?? ""}|||${p.designation ?? ""}`]
+      ? SUPABASE_PHOTO_BASE + officerPhotoMap[o.slug][`${p.name ?? ""}|||${p.designation ?? ""}`]
+      : p.photo ? (p.photo.startsWith("http") ? p.photo : "/dof-derectory-test" + p.photo) : null,
+  fallbackPhoto: p.photo ? (p.photo.startsWith("http") ? p.photo : "/dof-derectory-test" + p.photo) : null,
 })));
 function officersId(officeIndex: number, officerIndex: number) {
   let id = 1;
