@@ -11,10 +11,6 @@ export function displayUrl(u: string) {
 export function hrefOf(u: string) {
   return /^https?:/i.test(u) ? u : "http://" + u;
 }
-export function OfficeDomain({ url }: { url?: string | null }) {
-  if (!url) return null;
-  return <span className="break-all text-sm font-medium text-slate-500">{displayUrl(url)}</span>;
-}
 export function OfficeUrl({ url, className = "" }: { url?: string | null; className?: string }) {
   if (!url) return null;
   return <a href={hrefOf(url)} target="_blank" rel="noopener noreferrer" className={"inline-flex items-center gap-1.5 break-all text-sm font-medium office-url " + className}>
@@ -47,7 +43,6 @@ export function OfficerCard({ p, office }: { p: Officer; office?: Office }) {
 export function OfficeCard({ office, count }: { office: Office; count?: number }) {
   return <div className="office-card rounded-xl border p-4">
     <Link href={"/office/" + office.slug} className="block"><h3 className="text-[15px] font-semibold leading-snug">{office.name}</h3>{office.nameEn && <p className="mt-0.5 text-xs text-slate-500">{office.nameEn}</p>}</Link>
-    <div className="mt-2"><OfficeDomain url={office.url} /></div>
     <div className="mt-2 flex items-center justify-between text-xs text-slate-500"><span>{office.email ?? ""}</span>{typeof count === "number" && count > 0 && <span>{count} জন কর্মকর্তা</span>}</div>
   </div>;
 }
