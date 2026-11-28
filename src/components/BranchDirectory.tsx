@@ -4,28 +4,38 @@ import DirectoryOfficer from "@/components/DirectoryOfficer";
 export default function BranchDirectory({ branches }: { branches: [string, Officer[]][] }) {
   return (
     <section className="mt-6">
-      <h2 className="mb-4 border-l-4 border-emerald-700 pl-3 text-lg font-bold text-emerald-950">শাখাসমূহ</h2>
-      <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+      <h2 className="mb-3 border-l-4 border-emerald-600 pl-3 text-xl font-bold text-emerald-900">
+        শাখাসমূহ <span className="text-sm font-normal text-slate-500">({branches.length}টি)</span>
+      </h2>
+
+      <div className="grid gap-3 md:grid-cols-2 xl:grid-cols-3">
         {branches.map(([name, people], index) => (
-          <details key={name || index} className="group overflow-hidden rounded-xl border border-emerald-800 bg-white shadow-sm">
-            <summary className="flex cursor-pointer list-none items-center justify-between gap-3 bg-emerald-900 px-4 py-4 text-left text-white transition-colors hover:bg-emerald-800 [&::-webkit-details-marker]:hidden">
-              <span className="font-semibold leading-relaxed">{name || "অন্যান্য শাখা"}</span>
-              <span className="flex shrink-0 items-center gap-2">
-                <span className="rounded-full border border-white/40 bg-white/15 px-2.5 py-1 text-xs font-bold text-white">{people.length} জন</span>
-                <span className="text-xl leading-none transition-transform group-open:rotate-90">›</span>
-              </span>
-            </summary>
-            <div className="border-t border-emerald-100 bg-slate-50 p-3">
-              <h3 className="mb-3 border-l-4 border-emerald-700 pl-3 font-bold text-emerald-950">{name || "অন্যান্য শাখা"} — জনবল</h3>
-              <div className="grid gap-3 md:grid-cols-2 xl:grid-cols-3">
-                {people.map((person, personIndex) => (
-                  <DirectoryOfficer key={person.id || person.name || personIndex} p={person} />
-                ))}
-              </div>
-            </div>
-          </details>
+          <a
+            key={name || index}
+            href={`#branch-${index}`}
+            className="block rounded-xl border border-slate-200 bg-white p-4 shadow-sm transition-colors hover:border-emerald-400 hover:bg-emerald-50/40"
+          >
+            <h3 className="text-[15px] font-semibold leading-snug text-slate-900 hover:text-emerald-700">
+              {name}
+            </h3>
+            <p className="mt-2 text-xs text-slate-500">{people.length} জন কর্মকর্তা-কর্মচারী</p>
+          </a>
         ))}
       </div>
+
+      {branches.map(([name, people], index) => (
+        <section key={name || index} id={`branch-${index}`} className="mt-8 scroll-mt-24">
+          <h2 className="mb-3 flex items-center gap-2 border-l-4 border-emerald-600 pl-3 text-lg font-bold text-emerald-900">
+            {name}
+            <span className="rounded-full bg-emerald-100 px-2 py-0.5 text-xs font-medium text-emerald-700">{people.length} জন</span>
+          </h2>
+          <div className="grid gap-3 md:grid-cols-2 xl:grid-cols-3">
+            {people.map((person, personIndex) => (
+              <DirectoryOfficer key={person.id || person.name || personIndex} p={person} />
+            ))}
+          </div>
+        </section>
+      ))}
     </section>
   );
 }
