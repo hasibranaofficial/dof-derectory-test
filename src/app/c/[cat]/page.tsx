@@ -32,36 +32,42 @@ export default async function CategoryPage({ params }: { params: Promise<{ cat: 
     }
     const byDiv = groupBy(districts, (r) => r.office.division ?? "অন্যান্য").sort((a, b) => divRank(a[0]) - divRank(b[0]));
     body = byDiv.map(([div, list]) => (
-      <section key={div} className="mt-8">
-        {div !== "অন্যান্য" && <h2 className="mb-3 border-l-4 border-emerald-600 pl-3 text-xl font-bold text-emerald-900">
-          {div} বিভাগ <span className="text-sm font-normal text-slate-500">({list.length} জেলা)</span>
-        </h2>}
-        <div className="grid items-start gap-3 md:grid-cols-2 xl:grid-cols-3">
+      <section key={div} className="district-division">
+        {div !== "অন্যান্য" && (
+          <h2 className="district-division-heading">
+            <span>{div} বিভাগ</span>
+            <span className="district-division-count">{list.length} জেলা</span>
+          </h2>
+        )}
+        <div className="district-grid">
           {list.map(({ office, officerCount }) => {
             const ups = upByDist.get(office.district ?? "") ?? [];
             return (
-              <div key={office.id} className="rounded-xl border border-slate-200 bg-white p-4 shadow-sm">
-                <Link href={`/office/${office.slug}`} className="text-[15px] font-semibold text-slate-900 hover:text-emerald-700">
-                  {office.name}
-                </Link>
-                <p className="mt-1 text-xs text-slate-500">
-                  {officerCount} জন কর্মকর্তা{office.email ? ` · ${office.email}` : ""}
-                </p>
+              <article key={office.id} className="district-card">
+                <div className="district-card-top">
+                  <Link href={`/office/${office.slug}`} className="district-card-title">
+                    {office.name}
+                  </Link>
+                  <span className="district-staff-count">{officerCount} জন</span>
+                </div>
+                <p className="district-card-caption">জেলা মৎস্য দপ্তর · কর্মকর্তা</p>
                 {ups.length > 0 && (
-                  <details className="mt-3 rounded-lg bg-slate-50 p-2">
-                    <summary className="cursor-pointer text-sm font-medium text-sky-800">উপজেলা মৎস্য কার্যালয় ({ups.length})</summary>
-                    <ul className="mt-2 space-y-1.5">
+                  <details className="district-upazila-details">
+                    <summary>
+                      <span>উপজেলা মৎস্য কার্যালয়</span>
+                      <span className="district-upazila-count">{ups.length}টি</span>
+                      <span className="district-summary-chevron">›</span>
+                    </summary>
+                    <ul className="district-upazila-list">
                       {ups.map(({ office: u }) => (
-                        <li key={u.id} className="text-sm">
-                          <Link href={`/office/${u.slug}`} className="text-slate-800 hover:text-emerald-700 hover:underline">
-                            {u.upazila}
-                          </Link>
+                        <li key={u.id}>
+                          <Link href={`/office/${u.slug}`}>{u.upazila || u.name}</Link>
                         </li>
                       ))}
                     </ul>
                   </details>
                 )}
-              </div>
+              </article>
             );
           })}
         </div>
