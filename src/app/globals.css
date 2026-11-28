@@ -191,3 +191,64 @@ main.mx-auto.max-w-7xl .office-card > div:last-child { display:flex; justify-con
 /* Last successful refresh timestamp */
 .site-footer { text-align: right; }
 .last-updated { margin-top: 7px; color: var(--mute); font-size: 11px; opacity: .85; }
+
+
+/* District and upazila directory: clear, high-contrast cards in the site theme */
+.district-division { margin-top:24px; }
+.district-division-heading {
+  display:flex; align-items:center; justify-content:space-between; gap:12px;
+  margin:0 0 10px !important; padding:11px 13px !important;
+  border:1px solid color-mix(in srgb, var(--acc) 18%, var(--line)) !important;
+  border-left:4px solid var(--acc) !important; border-radius:12px !important;
+  background:var(--accbg) !important; color:var(--acc) !important;
+  font-size:16px !important; font-weight:700 !important;
+}
+.district-division-count {
+  flex:none; padding:4px 9px; border:1px solid color-mix(in srgb, var(--acc) 22%, transparent);
+  border-radius:999px; background:var(--card); color:var(--acc);
+  font-size:12px; font-weight:600;
+}
+.district-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:10px; }
+.district-card {
+  min-width:0; padding:13px 14px; border:1px solid var(--line); border-radius:14px;
+  background:var(--card); box-shadow:0 2px 9px rgba(12,55,54,.045);
+}
+.district-card-top { display:flex; align-items:flex-start; justify-content:space-between; gap:8px; }
+.district-card-title {
+  min-width:0; color:var(--ink) !important; font-size:15px; font-weight:700;
+  line-height:1.5; text-decoration:none;
+}
+.district-card-title:hover { color:var(--acc) !important; }
+.district-staff-count {
+  flex:none; padding:4px 8px; border-radius:999px; background:var(--accbg);
+  color:var(--acc); font-size:11px; font-weight:700; white-space:nowrap;
+}
+.district-card-caption { margin:4px 0 0; color:var(--mute) !important; font-size:12px; }
+.district-upazila-details { margin-top:11px; border-top:1px solid var(--line); }
+.district-upazila-details > summary {
+  display:flex; align-items:center; gap:7px; padding:10px 0 2px;
+  color:var(--acc); font-size:13px; font-weight:600; cursor:pointer; list-style:none;
+}
+.district-upazila-details > summary::-webkit-details-marker { display:none; }
+.district-upazila-count {
+  padding:2px 7px; border-radius:999px; background:var(--accbg);
+  color:var(--acc); font-size:11px;
+}
+.district-summary-chevron { margin-left:auto; font-size:19px; line-height:1; transition:transform .18s ease; }
+.district-upazila-details[open] .district-summary-chevron { transform:rotate(90deg); }
+.district-upazila-list {
+  display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:6px;
+  margin:8px 0 1px; padding:0; list-style:none;
+}
+.district-upazila-list li { min-width:0; }
+.district-upazila-list a {
+  display:block; padding:7px 8px; border:1px solid var(--line); border-radius:9px;
+  background:var(--bg); color:var(--ink) !important; font-size:12px;
+  line-height:1.45; text-decoration:none; overflow-wrap:anywhere;
+}
+.district-upazila-list a:hover { border-color:var(--acc); background:var(--accbg); color:var(--acc) !important; }
+@media(max-width:520px) {
+  .district-grid { grid-template-columns:1fr; gap:8px; }
+  .district-card { padding:12px 13px; }
+  .district-upazila-list { grid-template-columns:repeat(2,minmax(0,1fr)); }
+}
