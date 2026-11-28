@@ -3,6 +3,7 @@ import type { ReactNode } from "react";
 import Link from "next/link";
 import "./globals.css";
 import { SearchBox } from "@/components/ui";
+import lastRefresh from "../../data/last-refresh.json";
 
 export const metadata: Metadata = {
   title: "মৎস্য অধিদপ্তর — কর্মকর্তা ও কর্মচারী তথ্যভান্ডার",
@@ -10,6 +11,11 @@ export const metadata: Metadata = {
 };
 
 export default function RootLayout({ children }: { children: ReactNode }) {
+  const refreshedAt = lastRefresh.finished_at
+    ? new Intl.DateTimeFormat("bn-BD", {
+        timeZone: "Asia/Dhaka", dateStyle: "long", timeStyle: "short", hour12: true,
+      }).format(new Date(lastRefresh.finished_at))
+    : "তথ্য পাওয়া যায়নি";
   return (
     <html lang="bn">
       <body>
@@ -28,6 +34,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
         {children}
         <footer className="site-footer">
           তথ্য সরকারি ওয়েবসাইট থেকে নিয়মিত সংগ্রহ করা হয় · <a href="https://fisheries.gov.bd" target="_blank" rel="noopener noreferrer">মৎস্য অধিদপ্তর</a>
+          <div className="last-updated">সর্বশেষ আপডেট: {refreshedAt}</div>
         </footer>
       </body>
     </html>
