@@ -18,13 +18,13 @@ export default function DirectoryOfficer({ p }: { p: Officer }) {
     }
   };
   const tel = (s: string) => "tel:" + normDigits(s).replace(/[^\d+]/g, "");
-  const allRows: [string, string, (string | undefined)?][] = [
+  const designationBcs = (p.designation || "").match(/(?:বিসিএস|BCS|ক্যাডার)\\s*(?:ব্যাচ\\s*)?[-–—:：]?\\s*([০-৯\\d]{1,3}\\s*(?:তম|th)?)/i)?.[1] || "";\n  const bcsValue = p.bcs && p.bcs !== "০" && p.bcs !== "0" && p.bcs !== "-" ? p.bcs : designationBcs;\n  const allRows: [string, string, (string | undefined)?][] = [
     ["মোবাইল", p.mobile || "" , p.mobile ? tel(p.mobile) : undefined],
     ["ফোন", p.phone || "", p.phone ? tel(p.phone) : undefined],
     ["ইমেইল", p.email || "", p.email ? "mailto:" + p.email : undefined],
     ["কক্ষ", p.room && p.room !== "-" ? p.room : ""],
     ["ফ্যাক্স", p.fax || ""],
-    ["ব্যাচ", p.bcs && p.bcs !== "০" && p.bcs !== "0" ? "বিসিএস " + p.bcs : ""]
+    ["বিসিএস ব্যাচ", bcsValue ? "বিসিএস " + bcsValue : ""]
   ];
   const rows = allRows.filter((row) => Boolean(row[1]));
   const listDesignation = (p.designation || "").replace(/\s*[（(]\s*বিসিএস\s*[-–—:]?\s*[^）)]*[）)]/gi, "").replace(/\s+/g, " ").trim();
