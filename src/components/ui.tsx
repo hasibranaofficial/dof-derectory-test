@@ -11,7 +11,11 @@ export function displayUrl(u: string) {
 export function hrefOf(u: string) {
   return /^https?:/i.test(u) ? u : "http://" + u;
 }
-export function OfficeDomain({ url }: { url?: string | null }) {\n  if (!url) return null;\n  return <span className="break-all text-sm font-medium text-slate-500">{displayUrl(url)}</span>;\n}\nexport function OfficeUrl({ url, className = "" }: { url?: string | null; className?: string }) {
+export function OfficeDomain({ url }: { url?: string | null }) {
+  if (!url) return null;
+  return <span className="break-all text-sm font-medium text-slate-500">{displayUrl(url)}</span>;
+}
+export function OfficeUrl({ url, className = "" }: { url?: string | null; className?: string }) {
   if (!url) return null;
   return <a href={hrefOf(url)} target="_blank" rel="noopener noreferrer" className={"inline-flex items-center gap-1.5 break-all text-sm font-medium office-url " + className}>
     <svg viewBox="0 0 24 24" className="h-4 w-4 shrink-0" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="9" /><path d="M3 12h18M12 3c3 3.2 3 14.8 0 18M12 3c-3 3.2-3 14.8 0 18" /></svg>
