@@ -1,17 +1,20 @@
 {
-  "started_at": "2026-11-27T21:24:09.488877+00:00",
-  "finished_at": "2026-11-27T21:29:33.134553+00:00",
+  "started_at": "2026-11-28T08:27:54.724931+00:00",
+  "finished_at": "2026-11-28T08:39:22.320020+00:00",
   "timezone": "UTC",
   "offices_in_dataset": 703,
   "sources_scanned": 580,
-  "sources_with_staff_tables": 115,
+  "sources_with_staff_tables": 0,
   "new_officers": 0,
-  "updated_officer_records": 154,
-  "changed_fields": 154,
-  "photo_urls_found": 155,
-  "photos_saved": 154,
+  "updated_officer_records": 0,
+  "changed_fields": 0,
+  "photo_urls_found": 0,
+  "photos_saved": 0,
+  "supabase_photo_uploads": 0,
+  "supabase_photo_failures": 0,
+  "supabase_photo_sync_enabled": true,
   "photo_files_on_disk": 147,
-  "failed_sources": 113,
+  "failed_sources": 570,
   "failures_sample": [
     {
       "slug": "div-dhaka",
@@ -20,147 +23,137 @@
     },
     {
       "slug": "hq",
-      "status": "SSLError",
-      "http": 0
-    },
-    {
-      "slug": "div-khulna",
-      "status": "SSLError",
-      "http": 0
-    },
-    {
-      "slug": "div-barishal",
-      "status": "SSLError",
-      "http": 0
-    },
-    {
-      "slug": "div-chattogram",
-      "status": "SSLError",
+      "status": "ConnectTimeout",
       "http": 0
     },
     {
       "slug": "div-rajshahi",
-      "status": "SSLError",
+      "status": "ConnectTimeout",
       "http": 0
     },
     {
       "slug": "div-mymensingh",
-      "status": "SSLError",
+      "status": "ConnectTimeout",
+      "http": 0
+    },
+    {
+      "slug": "div-barishal",
+      "status": "ConnectTimeout",
+      "http": 0
+    },
+    {
+      "slug": "div-sylhet",
+      "status": "ConnectTimeout",
+      "http": 0
+    },
+    {
+      "slug": "div-chattogram",
+      "status": "ConnectTimeout",
+      "http": 0
+    },
+    {
+      "slug": "div-khulna",
+      "status": "ConnectTimeout",
+      "http": 0
+    },
+    {
+      "slug": "div-rangpur",
+      "status": "ConnectTimeout",
       "http": 0
     },
     {
       "slug": "fdi-chandpur",
-      "status": "SSLError",
+      "status": "ConnectTimeout",
       "http": 0
     },
     {
       "slug": "fdi-sirajganj",
-      "status": "SSLError",
+      "status": "ConnectTimeout",
       "http": 0
     },
     {
       "slug": "fdi-gopalganj",
-      "status": "SSLError",
+      "status": "ConnectTimeout",
       "http": 0
     },
     {
       "slug": "fdi-kishoreganj",
-      "status": "SSLError",
+      "status": "ConnectTimeout",
       "http": 0
     },
     {
       "slug": "fti-chandpur",
-      "status": "SSLError",
+      "status": "ConnectTimeout",
+      "http": 0
+    },
+    {
+      "slug": "fitc-raipur",
+      "status": "ConnectTimeout",
+      "http": 0
+    },
+    {
+      "slug": "ftc-kotchandpur",
+      "status": "ConnectTimeout",
       "http": 0
     },
     {
       "slug": "ftec-faridpur",
-      "status": "SSLError",
+      "status": "ConnectTimeout",
       "http": 0
     },
     {
       "slug": "dist-0",
-      "status": "SSLError",
+      "status": "ConnectTimeout",
       "http": 0
     },
     {
       "slug": "dist-1",
-      "status": "SSLError",
-      "http": 0
-    },
-    {
-      "slug": "dist-2",
-      "status": "SSLError",
+      "status": "ConnectTimeout",
       "http": 0
     },
     {
       "slug": "dist-3",
-      "status": "SSLError",
+      "status": "ConnectTimeout",
       "http": 0
     },
     {
-      "slug": "dist-4",
-      "status": "SSLError",
+      "slug": "dist-2",
+      "status": "ConnectTimeout",
       "http": 0
     },
     {
       "slug": "dist-5",
-      "status": "SSLError",
+      "status": "ConnectTimeout",
+      "http": 0
+    },
+    {
+      "slug": "dist-4",
+      "status": "ConnectTimeout",
       "http": 0
     },
     {
       "slug": "dist-6",
-      "status": "SSLError",
+      "status": "ConnectTimeout",
       "http": 0
     },
     {
       "slug": "dist-7",
-      "status": "SSLError",
+      "status": "ConnectTimeout",
       "http": 0
     },
     {
       "slug": "dist-8",
-      "status": "SSLError",
+      "status": "ConnectTimeout",
       "http": 0
     },
     {
       "slug": "dist-9",
-      "status": "SSLError",
+      "status": "ConnectTimeout",
       "http": 0
     },
     {
       "slug": "dist-10",
-      "status": "SSLError",
-      "http": 0
-    },
-    {
-      "slug": "dist-11",
-      "status": "SSLError",
-      "http": 0
-    },
-    {
-      "slug": "dist-12",
-      "status": "SSLError",
-      "http": 0
-    },
-    {
-      "slug": "dist-13",
-      "status": "SSLError",
-      "http": 0
-    },
-    {
-      "slug": "dist-14",
-      "status": "SSLError",
-      "http": 0
-    },
-    {
-      "slug": "dist-15",
-      "status": "SSLError",
-      "http": 0
-    },
-    {
-      "slug": "dist-16",
-      "status": "SSLError",
+      "status": "ConnectTimeout",
       "http": 0
     },
     {
@@ -169,168 +162,283 @@
       "http": 0
     },
     {
-      "slug": "dist-17",
-      "status": "SSLError",
+      "slug": "dist-11",
+      "status": "ConnectTimeout",
       "http": 0
     },
     {
-      "slug": "dist-19",
-      "status": "SSLError",
+      "slug": "dist-12",
+      "status": "ConnectTimeout",
+      "http": 0
+    },
+    {
+      "slug": "dist-13",
+      "status": "ConnectTimeout",
+      "http": 0
+    },
+    {
+      "slug": "dist-14",
+      "status": "ConnectTimeout",
+      "http": 0
+    },
+    {
+      "slug": "dist-16",
+      "status": "ConnectTimeout",
+      "http": 0
+    },
+    {
+      "slug": "dist-17",
+      "status": "ConnectTimeout",
+      "http": 0
+    },
+    {
+      "slug": "dist-15",
+      "status": "ConnectTimeout",
       "http": 0
     },
     {
       "slug": "dist-18",
-      "status": "SSLError",
+      "status": "ConnectTimeout",
+      "http": 0
+    },
+    {
+      "slug": "dist-19",
+      "status": "ConnectTimeout",
       "http": 0
     },
     {
       "slug": "dist-21",
-      "status": "SSLError",
+      "status": "ConnectTimeout",
       "http": 0
     },
     {
       "slug": "dist-22",
-      "status": "SSLError",
+      "status": "ConnectTimeout",
       "http": 0
     },
     {
       "slug": "dist-23",
-      "status": "SSLError",
+      "status": "ConnectTimeout",
       "http": 0
     },
     {
       "slug": "dist-25",
-      "status": "SSLError",
-      "http": 0
-    },
-    {
-      "slug": "dist-26",
-      "status": "SSLError",
-      "http": 0
-    },
-    {
-      "slug": "dist-27",
-      "status": "SSLError",
+      "status": "ConnectTimeout",
       "http": 0
     },
     {
       "slug": "dist-28",
-      "status": "SSLError",
+      "status": "ConnectTimeout",
+      "http": 0
+    },
+    {
+      "slug": "dist-26",
+      "status": "ConnectTimeout",
+      "http": 0
+    },
+    {
+      "slug": "dist-27",
+      "status": "ConnectTimeout",
       "http": 0
     },
     {
       "slug": "dist-29",
-      "status": "SSLError",
+      "status": "ConnectTimeout",
       "http": 0
     },
     {
       "slug": "dist-30",
-      "status": "SSLError",
+      "status": "ConnectTimeout",
       "http": 0
     },
     {
       "slug": "dist-31",
-      "status": "SSLError",
+      "status": "ConnectTimeout",
       "http": 0
     },
     {
       "slug": "dist-32",
-      "status": "SSLError",
-      "http": 0
-    },
-    {
-      "slug": "dist-34",
-      "status": "SSLError",
-      "http": 0
-    },
-    {
-      "slug": "dist-35",
-      "status": "SSLError",
+      "status": "ConnectTimeout",
       "http": 0
     },
     {
       "slug": "dist-33",
-      "status": "SSLError",
+      "status": "ConnectTimeout",
+      "http": 0
+    },
+    {
+      "slug": "dist-34",
+      "status": "ConnectTimeout",
+      "http": 0
+    },
+    {
+      "slug": "dist-35",
+      "status": "ConnectTimeout",
       "http": 0
     },
     {
       "slug": "dist-36",
-      "status": "SSLError",
+      "status": "ConnectTimeout",
       "http": 0
     },
     {
       "slug": "dist-37",
-      "status": "SSLError",
-      "http": 0
-    },
-    {
-      "slug": "dist-38",
-      "status": "SSLError",
-      "http": 0
-    },
-    {
-      "slug": "dist-40",
-      "status": "SSLError",
+      "status": "ConnectTimeout",
       "http": 0
     },
     {
       "slug": "dist-39",
-      "status": "SSLError",
+      "status": "ConnectTimeout",
+      "http": 0
+    },
+    {
+      "slug": "dist-38",
+      "status": "ConnectTimeout",
+      "http": 0
+    },
+    {
+      "slug": "dist-40",
+      "status": "ConnectTimeout",
       "http": 0
     },
     {
       "slug": "dist-41",
-      "status": "SSLError",
+      "status": "ConnectTimeout",
+      "http": 0
+    },
+    {
+      "slug": "dist-42",
+      "status": "ConnectTimeout",
+      "http": 0
+    },
+    {
+      "slug": "dist-43",
+      "status": "ConnectTimeout",
+      "http": 0
+    },
+    {
+      "slug": "dist-45",
+      "status": "ConnectTimeout",
+      "http": 0
+    },
+    {
+      "slug": "dist-46",
+      "status": "ConnectTimeout",
+      "http": 0
+    },
+    {
+      "slug": "dist-47",
+      "status": "ConnectTimeout",
+      "http": 0
+    },
+    {
+      "slug": "dist-48",
+      "status": "ConnectTimeout",
+      "http": 0
+    },
+    {
+      "slug": "dist-49",
+      "status": "ConnectTimeout",
+      "http": 0
+    },
+    {
+      "slug": "dist-44",
+      "status": "ConnectTimeout",
       "http": 0
     },
     {
       "slug": "dist-50",
-      "status": "SSLError",
+      "status": "ConnectTimeout",
       "http": 0
     },
     {
       "slug": "dist-51",
-      "status": "SSLError",
+      "status": "ConnectTimeout",
       "http": 0
     },
     {
       "slug": "dist-52",
-      "status": "SSLError",
+      "status": "ConnectTimeout",
       "http": 0
     },
     {
       "slug": "dist-53",
-      "status": "SSLError",
+      "status": "ConnectTimeout",
       "http": 0
     },
     {
       "slug": "dist-54",
-      "status": "SSLError",
+      "status": "ConnectTimeout",
       "http": 0
     },
     {
       "slug": "dist-55",
-      "status": "SSLError",
+      "status": "ConnectTimeout",
       "http": 0
     },
     {
       "slug": "dist-56",
-      "status": "SSLError",
+      "status": "ConnectTimeout",
       "http": 0
     },
     {
       "slug": "dist-57",
-      "status": "SSLError",
+      "status": "ConnectTimeout",
       "http": 0
     },
     {
       "slug": "dist-58",
-      "status": "SSLError",
+      "status": "ConnectTimeout",
       "http": 0
     },
     {
       "slug": "dist-59",
-      "status": "SSLError",
+      "status": "ConnectTimeout",
+      "http": 0
+    },
+    {
+      "slug": "dist-60",
+      "status": "ConnectTimeout",
+      "http": 0
+    },
+    {
+      "slug": "dist-61",
+      "status": "ConnectTimeout",
+      "http": 0
+    },
+    {
+      "slug": "dist-62",
+      "status": "ConnectTimeout",
+      "http": 0
+    },
+    {
+      "slug": "dist-63",
+      "status": "ConnectTimeout",
+      "http": 0
+    },
+    {
+      "slug": "upz-0",
+      "status": "ConnectTimeout",
+      "http": 0
+    },
+    {
+      "slug": "upz-1",
+      "status": "ConnectTimeout",
+      "http": 0
+    },
+    {
+      "slug": "upz-3",
+      "status": "ConnectTimeout",
+      "http": 0
+    },
+    {
+      "slug": "upz-2",
+      "status": "ConnectTimeout",
+      "http": 0
+    },
+    {
+      "slug": "upz-4",
+      "status": "ConnectTimeout",
       "http": 0
     },
     {
@@ -339,178 +447,73 @@
       "http": 0
     },
     {
-      "slug": "upz-372",
-      "status": "SSLError",
+      "slug": "upz-5",
+      "status": "ConnectTimeout",
       "http": 0
     },
     {
-      "slug": "upz-476",
-      "status": "ConnectionError",
+      "slug": "upz-6",
+      "status": "ConnectTimeout",
       "http": 0
     },
     {
-      "slug": "farm-2",
-      "status": "HTTPError",
+      "slug": "upz-7",
+      "status": "ConnectTimeout",
       "http": 0
     },
     {
-      "slug": "farm-3",
-      "status": "HTTPError",
+      "slug": "upz-8",
+      "status": "ConnectTimeout",
       "http": 0
     },
     {
-      "slug": "farm-14",
-      "status": "SSLError",
+      "slug": "upz-9",
+      "status": "ConnectTimeout",
       "http": 0
     },
     {
-      "slug": "farm-11",
-      "status": "HTTPError",
+      "slug": "upz-10",
+      "status": "ConnectTimeout",
       "http": 0
     },
     {
-      "slug": "farm-20",
-      "status": "SSLError",
+      "slug": "upz-11",
+      "status": "ConnectTimeout",
       "http": 0
     },
     {
-      "slug": "farm-15",
-      "status": "HTTPError",
+      "slug": "upz-12",
+      "status": "ConnectTimeout",
       "http": 0
     },
     {
-      "slug": "farm-22",
-      "status": "HTTPError",
+      "slug": "upz-13",
+      "status": "ConnectTimeout",
       "http": 0
     },
     {
-      "slug": "farm-26",
-      "status": "HTTPError",
+      "slug": "upz-17",
+      "status": "ConnectTimeout",
       "http": 0
     },
     {
-      "slug": "farm-24",
-      "status": "HTTPError",
+      "slug": "upz-18",
+      "status": "ConnectTimeout",
       "http": 0
     },
     {
-      "slug": "farm-27",
-      "status": "HTTPError",
+      "slug": "upz-19",
+      "status": "ConnectTimeout",
       "http": 0
     },
     {
-      "slug": "farm-29",
-      "status": "HTTPError",
+      "slug": "upz-20",
+      "status": "ConnectTimeout",
       "http": 0
     },
     {
-      "slug": "farm-34",
-      "status": "SSLError",
-      "http": 0
-    },
-    {
-      "slug": "farm-30",
-      "status": "HTTPError",
-      "http": 0
-    },
-    {
-      "slug": "farm-43",
-      "status": "SSLError",
-      "http": 0
-    },
-    {
-      "slug": "farm-32",
-      "status": "HTTPError",
-      "http": 0
-    },
-    {
-      "slug": "farm-37",
-      "status": "HTTPError",
-      "http": 0
-    },
-    {
-      "slug": "farm-38",
-      "status": "HTTPError",
-      "http": 0
-    },
-    {
-      "slug": "farm-40",
-      "status": "HTTPError",
-      "http": 0
-    },
-    {
-      "slug": "farm-39",
-      "status": "HTTPError",
-      "http": 0
-    },
-    {
-      "slug": "farm-44",
-      "status": "HTTPError",
-      "http": 0
-    },
-    {
-      "slug": "farm-49",
-      "status": "HTTPError",
-      "http": 0
-    },
-    {
-      "slug": "farm-51",
-      "status": "HTTPError",
-      "http": 0
-    },
-    {
-      "slug": "farm-53",
-      "status": "HTTPError",
-      "http": 0
-    },
-    {
-      "slug": "farm-56",
-      "status": "HTTPError",
-      "http": 0
-    },
-    {
-      "slug": "farm-57",
-      "status": "HTTPError",
-      "http": 0
-    },
-    {
-      "slug": "farm-58",
-      "status": "HTTPError",
-      "http": 0
-    },
-    {
-      "slug": "farm-62",
-      "status": "SSLError",
-      "http": 0
-    },
-    {
-      "slug": "farm-60",
-      "status": "HTTPError",
-      "http": 0
-    },
-    {
-      "slug": "farm-59",
-      "status": "HTTPError",
-      "http": 0
-    },
-    {
-      "slug": "farm-67",
-      "status": "SSLError",
-      "http": 0
-    },
-    {
-      "slug": "farm-70",
-      "status": "SSLError",
-      "http": 0
-    },
-    {
-      "slug": "farm-63",
-      "status": "HTTPError",
-      "http": 0
-    },
-    {
-      "slug": "farm-64",
-      "status": "HTTPError",
+      "slug": "upz-21",
+      "status": "ConnectTimeout",
       "http": 0
     }
   ],
