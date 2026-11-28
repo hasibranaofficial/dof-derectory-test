@@ -267,6 +267,11 @@ def fetch_office(item):
         if "html" not in response.headers.get("content-type", "").lower() and not response.text.lstrip().startswith("<"):
             return item["slug"], [], "not_html", response.status_code
         pages = [response.url] + staff_links(response.text, response.url)
+        # FIQC Chattogram publishes its staff directory on a dedicated
+        # static page rather than a reliably discoverable homepage link.
+        if item.get("slug") == "fiqc-chattogram":
+            pages.append("https://fiqcchattogram.fisheries.gov.bd/pages/static-pages/officers-a224b5-6922dfe4933eb65569e24849")
+        pages = list(dict.fromkeys(pages))
         all_people = []
         for page in pages[:MAX_STAFF_LINKS + 1]:
             try:
