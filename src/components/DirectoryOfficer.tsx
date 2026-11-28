@@ -7,6 +7,16 @@ import { normDigits } from "@/lib/translit";
 export default function DirectoryOfficer({ p }: { p: Officer }) {
   const [open, setOpen] = useState(false);
   const [imageFailed, setImageFailed] = useState(false);
+  const [imageSrc, setImageSrc] = useState(p.photo);
+  const [fallbackUsed, setFallbackUsed] = useState(false);
+  const handleImageError = () => {
+    if (!fallbackUsed && p.fallbackPhoto && p.fallbackPhoto !== imageSrc) {
+      setFallbackUsed(true);
+      setImageSrc(p.fallbackPhoto);
+    } else {
+      setImageFailed(true);
+    }
+  };
   const tel = (s: string) => "tel:" + normDigits(s).replace(/[^\d+]/g, "");
   const allRows: [string, string, (string | undefined)?][] = [
     ["মোবাইল", p.mobile || "" , p.mobile ? tel(p.mobile) : undefined],
@@ -22,7 +32,7 @@ export default function DirectoryOfficer({ p }: { p: Officer }) {
     <article className={"directory-person" + (open ? " open" : "")}>
       <div className="directory-person-row">
         <button className="directory-person-main" onClick={() => setOpen(!open)} aria-expanded={open}>
-          {p.photo && !imageFailed ? <img className="directory-avatar" src={p.photo} alt="" loading="lazy" decoding="async" onError={() => setImageFailed(true)} /> : <span className="directory-avatar directory-avatar-fallback">{initial}</span>}
+          {imageSrc && !imageFailed ? <img className="directory-avatar" src={imageSrc} alt="" loading="lazy" decoding="async" onError={handleImageError} /> : <span className="directory-avatar directory-avatar-fallback">{initial}</span>}
           <span className="directory-person-text">
             <span className="directory-person-name">{p.name || "নাম প্রদর্শিত নয়"}</span>
             <span className="directory-person-designation">{p.designation}</span>
