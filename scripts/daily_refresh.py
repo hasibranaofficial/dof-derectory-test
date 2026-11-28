@@ -33,6 +33,11 @@ def clean(v):
 def norm(v):
     return re.sub(r"[^\w\u0980-\u09ff]+", "", clean(v).lower())
 
+def extract_bcs(value):
+    """Read BCS/cadre batch whether it appears in a dedicated field or designation text."""
+    match = re.search(r"(?:বিসিএস|BCS|ক্যাডার|cadre)(?:\\s*ব্যাচ)?\\s*[-–—:：]?\\s*([০-৯\\d]{1,3}\\s*(?:তম|th)?)", clean(value), re.I)
+    return clean(match.group(1)) if match else ""
+
 def is_probable_name(value):
     value = clean(value)
     if len(value) < 4 or len(value) > 90 or re.search(r"@|https?://|\d{4}", value):
@@ -91,7 +96,7 @@ def extract_people(html, page_url):
                     elif i + 1 < len(cells):
                         bcs_value = cells[i + 1]
                     break
-        name_idx = next((i for i,c in enumerate(cells) if is_probable_name(c)), None)
+        if not bcs_value:\n            bcs_value = extract_bcs(" ".join(cells))\n        name_idx = next((i for i,c in enumerate(cells) if is_probable_name(c)), None)
         if name_idx is None:
             continue
         desig_idx = next((i for i,c in enumerate(cells) if i != name_idx and is_probable_designation(c)), None)
@@ -163,10 +168,7 @@ def extract_people(html, page_url):
                     if candidate and not candidate.startswith("data:"):
                         photo_src = candidate
                         break
-            bcs = ""
-            bcs_match = re.search(r"(?:বিসিএস|BCS|ক্যাডার|cadre|batch)[^০-৯\d]{0,12}([০-৯\d]{1,3}(?:তম|th)?)", text, re.I)
-            if bcs_match:
-                bcs = bcs_match.group(1)
+            bcs = extract_bcs(text)
             found.append({
                 "name": name, "designation": designation,
                 "email": email.group(0) if email else "",
