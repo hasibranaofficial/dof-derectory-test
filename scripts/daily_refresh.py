@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 """Conservative daily refresh of the public Bangladesh Department of Fisheries directory.
+Supabase photo sync is enabled by the repository secret when configured.
 Includes BCS/cadre batch extraction where official staff tables publish that field.
 
 Only official source URLs already recorded in data/seed.json are fetched.
