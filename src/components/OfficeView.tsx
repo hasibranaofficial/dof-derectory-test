@@ -78,7 +78,7 @@ export default async function OfficeView({ office, people }: { office: Office; p
                 href={`#b-${i}`}
                 className="rounded-full border border-emerald-200 bg-white px-3 py-1 text-xs font-medium text-emerald-800 hover:bg-emerald-50"
               >
-                {b || "অন্যান্য"} <span className="text-slate-400">({list.length})</span>
+                {b && <>{b} </>}<span className="text-slate-400">({list.length})</span>
               </a>
             ))}
           </div>
@@ -96,9 +96,9 @@ export default async function OfficeView({ office, people }: { office: Office; p
         ) : (
           branches.map(([b, list], i) => (
             <section key={i} id={`b-${i}`} className="mt-6">
-              {hasBranches && (
+              {hasBranches && b && (
                 <h2 className="mb-3 flex items-center gap-2 border-l-4 border-emerald-600 pl-3 text-lg font-bold text-emerald-900">
-                  {b || "অন্যান্য"}
+                  {b}
                   <span className="rounded-full bg-emerald-100 px-2 py-0.5 text-xs font-medium text-emerald-700">{list.length}</span>
                 </h2>
               )}
